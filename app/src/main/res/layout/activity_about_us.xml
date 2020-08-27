@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".about_us">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="182dp"
+            android:layout_height="77dp"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/my_logo" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="87dp"
+            android:src="@drawable/my_logo2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About "
+            android:textColor="@color/black"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/us"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Us"
+            android:textColor="#81D3F8"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/aboutus_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="60px"
+        android:layout_marginRight="50px"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:text="Causefairy is the first and dedicated online marketplace in Australia that makes it easy for people to convert preloved items into cash donations for Causes close to their heart.
+It is a free fundraising platform and new revenue stream for all of Australia’s charities and not for profits."
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/aboutus_desc1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginRight="50px"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:text="We have worked to bring together over 55, 000 thousand charities, not for profits, and local clubs to makae it easier for pepople to convert theri pre loved items into cash donations for causes  close to their heart."
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/aboutus_desc2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="30px"
+        android:layout_marginRight="50px"
+        android:gravity="center"
+        android:text="Our aim is to make fundraising simple, efficient and environmentally  friendly through levaraging social media, technology and good will."
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/aboutus_desc3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="35px"
+        android:layout_marginRight="50px"
+        android:gravity="center"
+        android:text="Don't let your pre loved items go to waste."
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/aboutus_desc4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="35px"
+        android:layout_marginRight="50px"
+        android:gravity="center"
+        android:text="Join the Causefairy community"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/aboutus_follow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="35px"
+        android:layout_marginRight="50px"
+        android:gravity="center"
+        android:text="Follow Us"
+        android:textColor="#02A7F0" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:layout_margin="10px">
+
+        <ImageView
+            android:id="@+id/fb_logo"
+            android:layout_width="20dp"
+            android:layout_marginLeft="10px"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/fb" />
+
+        <ImageView
+            android:id="@+id/twitter_logo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10px"
+            app:srcCompat="@drawable/twitter" />
+
+        <ImageView
+            android:id="@+id/insta_logo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10px"
+            app:srcCompat="@drawable/insta" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/aboutus_homepage"
+        android:layout_marginTop="5dp"
+        android:layout_width="199dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_login"
+        android:text="Continue to Home page"
+        android:textColor="@color/blue" />
+
+
+</LinearLayout>

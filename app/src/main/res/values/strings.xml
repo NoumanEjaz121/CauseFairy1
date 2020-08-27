@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">CauseFairy</string>
+    <string-array name="droplist">
+        <item> </item>
+        <item> Health Benefits</item>
+        <item> Arts, Social and Humanities</item>
+        <item> Education Benefits</item>
+        <item> Society Benefits</item>
+        <item> Religious Benefits</item>
+        <item> Human Services</item>
+        <item> Wildlife Benefits</item>
+    </string-array>
+    <string-array name="category">
+        <item></item>
+        <item> Furniture</item>
+        <item> Electronics</item>
+        <item> Clothes</item>
+        <item> Art</item>
+    </string-array>
+
+    <string name="title_activity_register_business">RegisterBusiness</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="business">Business</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>
