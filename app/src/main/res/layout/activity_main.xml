@@ -209,6 +209,12 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btnResendCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Verify Email Now (THis will go on a profile page)" />
+
 
     </LinearLayout>
 </RelativeLayout>
