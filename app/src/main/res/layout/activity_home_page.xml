@@ -16,6 +16,7 @@
         app:menu="@menu/main_menu"
         android:layout_gravity="start"/>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -169,7 +170,7 @@
             <RelativeLayout
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="130dp">
 
                 <ImageView
                     android:id="@+id/market_slides"
@@ -181,11 +182,12 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="197dp"
                     android:src="@drawable/howitworks" />
 
             </RelativeLayout>
@@ -194,9 +196,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/grey"
-                android:layout_marginTop="23dp"
                 android:paddingStart="15dp"
-                android:paddingEnd="5dp">
+                android:paddingEnd="5dp"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="50dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
