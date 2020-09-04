@@ -67,43 +67,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-      /*  btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email, pass;
-
-                email = etEmail.getText().toString();
-                pass = etPass.getText().toString();
-
-                if (email.equals("")) {
-                    etEmail.setError("Please Enter Email");
-                } else if (!email.contains("@")) {
-                    etEmail.setError("Please Enter a valid Email Address");
-                } else if (pass.equals("")) {
-                    etPass.setError("Please Enter Password");
-                }
-                //mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                //   @Override
-                //   public void onComplete(@NonNull Task<AuthResult> task) {
-                //      if(!task.isSuccessful())
-                //      {
-                //          Toast.makeText(MainActivity.this,"Sign In Problem", Toast.LENGTH_LONG).show();
-                //       }
-                //      else
-                //      {
-                //           FirebaseUser user = mAuth.getCurrentUser();
-
-                //        }
-                //  }
-                //});
-                else if (email.equals("noumanejaz828@gmail.com") && pass.equals("1234")) {
-                    Intent d = new Intent(MainActivity.this, HomePage.class);
-                    startActivity(d);
-                } else {
-                    Toast.makeText(MainActivity.this, "Incorrect Username or Password!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }); */
 
         tvReg.setOnClickListener(new View.OnClickListener() {
             @Override
