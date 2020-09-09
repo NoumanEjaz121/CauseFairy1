@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "678344846548",
+    "firebase_url": "https://milo-206a6.firebaseio.com",
+    "project_id": "milo-206a6",
+    "storage_bucket": "milo-206a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678344846548:android:d071ef6e738aa4936a9f41",
+        "android_client_info": {
+          "package_name": "com.example.causefairy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678344846548-87ssu0lm84mlnv625ol2s5h4re9tfrfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.causefairy",
+            "certificate_hash": "1db37a4c9d5c7cd7ec101c975bf55108662ebee4"
+          }
+        },
+        {
+          "client_id": "678344846548-5id05d22nbn575oj0divcai6k8ls3em3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8czvrFf123ZDWRIWUN2rOLxB8bm82XUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678344846548-5id05d22nbn575oj0divcai6k8ls3em3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

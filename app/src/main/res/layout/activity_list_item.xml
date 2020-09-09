@@ -112,7 +112,7 @@
         <EditText
             android:id="@+id/item_description"
             android:layout_width="390dp"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
             android:background="@drawable/tex_border"
@@ -162,7 +162,53 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="393dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:paddingStart="5dp"
+            android:paddingLeft="5dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Enter Item"
+                android:textColor="#80000000"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="   Qty  "
+                android:textColor="@color/blue"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="70dp"
+                android:layout_height="20dp"
+                android:background="@drawable/tex_border"
+                android:layout_marginLeft="212dp">
+
+
+                <EditText
+                    android:id="@+id/et_qty"
+                    android:layout_width="70dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/tex_border"
+                    android:hint="QTY"
+                    android:inputType="text"
+                    android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="393dp"
             android:layout_height="wrap_content"
@@ -193,6 +239,7 @@
                 android:layout_height="20dp"
                 android:background="@drawable/tex_border"
                 android:layout_marginLeft="212dp">
+
 
                 <EditText
                     android:id="@+id/et_price"

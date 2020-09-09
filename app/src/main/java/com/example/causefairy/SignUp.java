@@ -37,8 +37,8 @@ public class SignUp extends AppCompatActivity {
     private static final String TAG = "SignUp";
 
     private EditText etEmail, etName1, etName2, etPass, etConPass;
-    private Button btnSignUp, btnInd, btnBus;   //            android:id="@+id/btnSignUp"
-    private TextView tvLogin;
+    Button btnSignUp, btnInd, btnBus;
+    TextView tvLogin;
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
@@ -84,37 +84,6 @@ public class SignUp extends AppCompatActivity {
                 startActivity(log);
             }
        });
-
-       /* btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name1, email, name2, pass;
-                name1 = etName1.getText().toString();
-                name2 = etName2.getText().toString();
-                email = etEmail.getText().toString();
-                pass = etPass.getText().toString();
-                String conPass = etConPass.getText().toString();
-
-                if (name1.equals("")) {
-                   etName1.setError("Name is Required");
-                } else if (name2.equals("")) {
-                    etName2.setError("Last Name is Required");
-                } else if (email.equals("")) {
-                    etEmail.setError("Email is Required");
-                } else if (!email.contains("@")) {
-                    etEmail.setError("Enter a valid Email Address");
-                } else if (pass.equals("")) {
-                    etPass.setError("Password is Required");
-                } else if (conPass.equals("")) {
-                    etConPass.setError("Confirm Password is Required");
-                } else if (!conPass.equals(pass)) {
-                    etConPass.setError("Passwords do not match");
-                } else {
-                    Intent l = new Intent(SignUp.this, HomePage.class);
-                    startActivity(l);
-                }
-            }
-        }); */
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

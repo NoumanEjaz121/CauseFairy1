@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(MainActivity.this, "Sign In was Successfulllllll!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Sign In was Successful!", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(MainActivity.this, HomePage.class );
                     startActivity(i);
                     finish();
