@@ -69,10 +69,7 @@ public class list_item extends AppCompatActivity {
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
 
-        Spinner mySpinner2 = findViewById(spinner1);
-        ArrayAdapter<String> myAdapter2 = new ArrayAdapter<>(list_item.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.category));
-        myAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner2.setAdapter(myAdapter2);
+
 
         auc_btn.setOnClickListener(new View.OnClickListener() {
             @Override
