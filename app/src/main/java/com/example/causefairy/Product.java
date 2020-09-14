@@ -1,10 +1,13 @@
 package com.example.causefairy;
 
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
+@IgnoreExtraProperties
 public class Product {
     private String documentId;
     private String productName;
+    private String category;
     private String description;
     private int qty;
     private double unitPrice;
@@ -24,21 +27,31 @@ public class Product {
     }
 
 
-    public Product(String productName, String description, int qty, double unitPrice) {  //temp
+    public Product(String productName, String category, String description, int qty, double unitPrice) {  //temp
         this.productName = productName;
+        this.category = category;
         this.description = description;
         this.qty = qty;
         this.unitPrice = unitPrice;
     }
 
 
-    public Product(String productName, String description, int qty, double unitPrice, char shippingFee, String sellerId) {
+    public Product(String productName, String category, String description, int qty, double unitPrice, char shippingFee, String sellerId) {
         this.productName = productName;
+        this.category = category;
         this.description = description;
         this.qty = qty;
         this.unitPrice = unitPrice;
         this.shippingFee = shippingFee;
         this.sellerId = sellerId;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getProductName() {

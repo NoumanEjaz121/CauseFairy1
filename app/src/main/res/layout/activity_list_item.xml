@@ -96,6 +96,7 @@
 
         </LinearLayout>
 
+
         <EditText
             android:id="@+id/et_title"
             android:layout_width="390dp"
@@ -153,12 +154,13 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/tex_border">
 
-                <Spinner
-                    android:id="@+id/spinner1"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tvCategory"
+                    android:layout_width="266dp"
                     android:layout_height="match_parent"
                     android:dropDownWidth="match_parent" />
             </LinearLayout>
+
 
 
         </LinearLayout>
@@ -357,5 +359,10 @@
                 android:textStyle="normal" />
 
         </LinearLayout>
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/my_logo2" />
     </LinearLayout>
 </RelativeLayout>
