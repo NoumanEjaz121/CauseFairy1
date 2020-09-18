@@ -26,7 +26,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    TextView about, us, terms, use, sell, shop;
+    TextView about, us, terms, use, sell, shop, tvCause;
     ImageView instagram, facebook, twitter;
 
 
@@ -70,6 +70,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         use = findViewById(R.id.use);
         sell = findViewById(R.id.tv_Sell);
         shop = findViewById(R.id.tvShop);
+        tvCause = findViewById(R.id.tvCause);
 
         sell.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +86,13 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 startActivity(shop);
             }
         });
-
+       tvCause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomePage.this, Causes.class);
+                startActivity(i);
+            }
+        });
 
         about.setOnClickListener(new View.OnClickListener() {
             @Override

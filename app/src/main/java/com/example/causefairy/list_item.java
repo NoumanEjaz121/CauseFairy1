@@ -44,12 +44,16 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static com.example.causefairy.R.id.ivProductIcon;
 import static com.example.causefairy.R.id.spinner;
 //import static com.example.causefairy.R.id.spinner1;
 
 public class list_item extends AppCompatActivity {
 
-    private ImageView add_img1, add_img2, add_img3, backBtn;
+  //  private String add_img1 = findViewById(R.id.add_img1);
+    private ImageView add_img2; //works
+    private ImageView add_img3;
+    private ImageView backBtn;
     private TextView tvCategory;
     Spinner spin;
     private EditText et_title, et_description, et_price, et_qty;
@@ -57,7 +61,12 @@ public class list_item extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private CollectionReference fsListedProductRef = db.collection("fsListedProducts");
+    private DocumentReference fsProductRef = db.document("fsListedProducts/Product fs single");
+
+
 
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 300;
@@ -79,7 +88,6 @@ public class list_item extends AppCompatActivity {
 
         backBtn = findViewById(R.id.backBtn);
         tvCategory = findViewById(R.id.tvCategory);
-        add_img1 = findViewById(R.id.add_img1);
         add_img2 = findViewById(R.id.add_img2);
         add_img3 = findViewById(R.id.add_img3);
         auc_btn = findViewById(R.id.auc_btn);
@@ -115,7 +123,7 @@ public class list_item extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        add_img1.setOnClickListener(new View.OnClickListener() {
+        add_img2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImagePickDialog();
@@ -264,24 +272,28 @@ public class list_item extends AppCompatActivity {
 
             if(requestCode == IMAGE_PICK_GALLERY_CODE){
                 image_uri = data.getData();
-                add_img1.setImageURI(image_uri);
+                add_img2.setImageURI(image_uri);
             }
             else if(resultCode == IMAGE_PICK_CAMERA_CODE){
-                add_img1.setImageURI(image_uri);
+                add_img2.setImageURI(image_uri);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private String productName, category, description, qty, price;
     public void addProductListing() {
-        productName = et_title.getText().toString().trim();
-        category = tvCategory.getText().toString().trim();
-        description = et_description.getText().toString().trim();
-        qty = et_qty.getText().toString().trim();
-        price = et_price.getText().toString().trim();
-        //char shippingFee =
-        //String sellerId = "";
+        final String documentId = "9";
+        final String productName = et_title.getText().toString().trim();
+        final String category = tvCategory.getText().toString().trim();
+        final String description = et_description.getText().toString().trim();
+        final int qty = Integer.parseInt(et_qty.getText().toString().trim());
+        double unitPrice = Double.parseDouble(et_price.getText().toString().trim());
+        final String productIcon  = "9999";// = ivProductIcon.getText()
+        final String timestamp = "" + System.currentTimeMillis();
+        final String uid = firebaseAuth.getUid().toString();
+
+
+        final Product product = new Product(documentId, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
         if (TextUtils.isEmpty(productName)) {
             et_title.setError("Title required");
             et_title.requestFocus();
@@ -294,67 +306,43 @@ public class list_item extends AppCompatActivity {
             et_description.setError("Description required");
             et_description.requestFocus();
             return;
-        } else if (TextUtils.isEmpty(qty)) {
+        }
+         else if (qty == 0) {
             et_qty.setError("Please enter quantity");
             et_qty.requestFocus();
             return;
-        } else if (Double.parseDouble(price) < 6) {
+        } else if (unitPrice <= 5.0) {
             et_price.setError("Price must be over $5");
             et_price.requestFocus();
             return;
         }
 
-        addProduct();
-    }
 
-    private void addProduct() {
         progressDialog.setMessage("Product being Added...");
         progressDialog.show();
-       // progressDialog.setCanceledOnTouchOutside(false);
-        final String timestamp = "" + System.currentTimeMillis();
+        // progressDialog.setCanceledOnTouchOutside(false);
 
-        if (image_uri == null) {
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("productId", "" + timestamp);
-            hashMap.put("Title ", "" + productName);
-            hashMap.put("Category ", "" + category);
-            hashMap.put("Description", "" + description);
-            hashMap.put("Qty", "" + qty);
-            hashMap.put("Price", "" + price);
-            hashMap.put("productIcon", ""); //no image
-            hashMap.put("timestamp", "" +timestamp);
-            hashMap.put("uid", "" +firebaseAuth.getUid());
 
-            //Firestore:
-            db.collection("FS Products").add(hashMap)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            progressDialog.dismiss();
-                            Toast.makeText(list_item.this, "Product has been added to FS", Toast.LENGTH_SHORT).show();
-                            clearData();
-                        }
-                    })
-                    /* REALTIME:
-                               DatabaseReference ref = FirebaseDatabase.getInstance().getReference("USERS");
-                               ref.child(firebaseAuth.getUid()).child("PRODUCTS").child(timestamp).setValue(hashMap) //might be null
-                              .addOnSuccessListener(new OnSuccessListener<Void>() {
-                               @Override
-                               public void onSuccess(Void aVoid) {
-                                   progressDialog.dismiss();
-                                   Toast.makeText(list_item.this, "Product has been added", Toast.LENGTH_SHORT).show();
-                                   clearData();
-                               }
-                           })*/
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(list_item.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
-        else {
+        //Firestore:
+        db.collection("FS Products").add(product)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        progressDialog.dismiss();
+                        Toast.makeText(list_item.this, "Product has been added to FS", Toast.LENGTH_SHORT).show();
+                        clearData();
+                    }
+                })
+
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(list_item.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
             String filePath = "PRODUCT_IMAGES/" + "" + timestamp;
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
@@ -368,19 +356,13 @@ public class list_item extends AppCompatActivity {
                             Uri downloadImageUri = uriTask.getResult();
 
                             if (uriTask.isSuccessful()) {
-                                HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("productId", "" + timestamp);
-                                hashMap.put("Title ", "" + productName);
-                                hashMap.put("Category ", "" + category);
-                                hashMap.put("Description", "" + description);
-                                hashMap.put("Qty", "" + qty);
-                                hashMap.put("Price", "" + price);
-                                hashMap.put("productIcon", "" + downloadImageUri); //image
-                                hashMap.put("timestamp", "" + timestamp);
-                                hashMap.put("uid", "" + firebaseAuth.getUid());
+                                fsListedProductRef.add(product);
+                               // hashMap.put("productIcon", "" + downloadImageUri); //image
+                               // hashMap.put("timestamp", "" + timestamp);
+                             //   hashMap.put("uid", "" + firebaseAuth.getUid());
 
                                 //FIRESTORE:
-                                db.collection("FS Products").add(hashMap)
+                                db.collection("FS Products").add(product)
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
@@ -389,17 +371,6 @@ public class list_item extends AppCompatActivity {
                                                 clearData();
                                             }
                                         })
-                                        /*   REALTIME:
-                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("USERS");
-                                                ref.child(firebaseAuth.getUid()).child("PRODUCTS").child(timestamp).setValue(hashMap) //might be null
-                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
-                                                                progressDialog.dismiss();
-                                                                Toast.makeText(list_item.this, "Product has beed added", Toast.LENGTH_SHORT).show();
-                                                                clearData();
-                                                            }
-                                                        }) */
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
@@ -418,7 +389,7 @@ public class list_item extends AppCompatActivity {
                         }
                     });
         }
-    }
+
     private void clearData () {
         et_title.setText("");
         tvCategory.setText("");
@@ -426,7 +397,7 @@ public class list_item extends AppCompatActivity {
         et_qty.setText("");
         et_price.setText("");
 
-        add_img1.setImageResource(R.drawable.add_image);// needs fixing but i have no idea re drawable stuff??
+        add_img2.setImageResource(R.drawable.add_image);// needs fixing but i have no idea re drawable stuff??
 
         image_uri = null;
     }

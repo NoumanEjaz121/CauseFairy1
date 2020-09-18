@@ -14,4 +14,17 @@ public class Constants {
             "Books",
             "Other"
     };
+    public static final String [] productCategories1 = {
+            "All",
+            "Furniture",
+            "Electronics",
+            "Clothing",
+            "Bedding",
+            "Kitchen Appliances",
+            "Art",
+            "Motor Vehicles",
+            "Toys",
+            "Books",
+            "Other"
+    };
 }

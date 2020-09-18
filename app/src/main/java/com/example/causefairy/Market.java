@@ -46,19 +46,19 @@ public class Market extends AppCompatActivity {
 
         //Search Button Implementation
         search.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View v) {
-                                          String Keyword;
-                                          Keyword = keyword.getText().toString();
+            @Override
+            public void onClick(View v) {
+                String Keyword;
+                Keyword = keyword.getText().toString();
 
-                                          if (Keyword.equals("")) {
-                                              keyword.setError("Please Enter keyword to search e.g Social Causes");
-                                          } else {
-                                              Intent search = new Intent(Market.this, Market.class);
-                                              startActivity(search);
-                                          }
-                                      }
-                                  });
+                if (Keyword.equals("")) {
+                    keyword.setError("Please Enter keyword to search e.g Social Causes");
+                } else {
+                    Intent search = new Intent(Market.this, Market.class);
+                    startActivity(search);
+                }
+            }
+        });
         //Bottom Bar Implementation
         about.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +139,7 @@ public class Market extends AppCompatActivity {
             }
         });
 
-        
+
 
     }
 }

@@ -59,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(f);
             }
         });
+       //take to cause page:
+        btnResendCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, Causes.class);
+                startActivity(i);
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
