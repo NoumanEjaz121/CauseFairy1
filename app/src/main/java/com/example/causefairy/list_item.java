@@ -310,7 +310,7 @@ public class list_item extends AppCompatActivity {
     private void addProduct() {
         progressDialog.setMessage("Product being Added...");
         progressDialog.show();
-        // progressDialog.setCanceledOnTouchOutside(false);
+       // progressDialog.setCanceledOnTouchOutside(false);
         final String timestamp = "" + System.currentTimeMillis();
 
         if (image_uri == null) {

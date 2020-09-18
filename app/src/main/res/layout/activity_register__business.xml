@@ -27,6 +27,7 @@
                 android:src="@drawable/my_logo" />
 
             <ImageView
+                android:id="@+id/ivLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="87dp"
                 android:src="@drawable/my_logo2"/>
@@ -164,6 +165,28 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
+            android:text="Location: "
+            android:textColor="#80000000"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etAddResult"
+            android:layout_width="338dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_login"
+            android:inputType="text"
+            android:paddingStart="5dp"
+            android:paddingLeft="5dp"
+            android:textColor="@color/black"
+            android:textSize="14dp" />
+
+        <TextView
+            android:layout_width="338dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
             android:text="ABN No: "
             android:textColor="#80000000"
             android:textSize="14dp"
@@ -204,6 +227,8 @@
             android:paddingLeft="5dp"
             android:textColor="@color/black"
             android:textSize="14dp" />
+
+
 
         <TextView
             android:layout_width="338dp"
@@ -261,6 +286,23 @@
             android:textAllCaps="false"
             android:textColor="@color/blue"
             android:textSize="14dp" />
+        <Button
+            android:id="@+id/btnGps"
+            android:layout_width="131dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_login"
+            android:text="GPS"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="14dp" />
+        <ImageView
+            android:id="@+id/add_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/add_image" />
 
     </LinearLayout>
 </RelativeLayout>
