@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     private EditText etEmail, etPass;
-    Button btnLogin, btnResendCode;
+    Button btnLogin, btnLogOut;
     TextView tvReg, tvfrgtPass, tvVerifyMsg;
 
     ProgressDialog progressDialog;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvfrgtPass = findViewById(R.id.tvfrgtPass);
         progressDialog = new ProgressDialog(this);
-        btnResendCode = findViewById(R.id.btnResendCode);
+        btnLogOut = findViewById(R.id.btnLogOut);
         tvVerifyMsg = findViewById(R.id.tvVerifyMsg);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -59,11 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(f);
             }
         });
-       //take to cause page:
-        btnResendCode.setOnClickListener(new View.OnClickListener() {
+       //needs design
+       btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Causes.class);
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(MainActivity.this, HomePage.class);
                 startActivity(i);
             }
         });

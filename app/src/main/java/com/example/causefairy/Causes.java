@@ -95,7 +95,7 @@ public class Causes extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Causes.this, "ERR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Causes.this, "Please Sign In", Toast.LENGTH_SHORT).show();
             }
         });
 

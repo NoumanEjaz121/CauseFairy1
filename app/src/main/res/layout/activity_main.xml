@@ -209,10 +209,10 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnResendCode"
+            android:id="@+id/btnLogOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="takes to CAUSES page)" />
+            android:text="Log Out" />
 
 
     </LinearLayout>
