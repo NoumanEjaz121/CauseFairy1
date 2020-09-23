@@ -50,12 +50,12 @@ import static com.example.causefairy.R.id.spinner;
 
 public class list_item extends AppCompatActivity {
 
-  //  private String add_img1 = findViewById(R.id.add_img1);
+
     private ImageView add_img2; //works
-    private ImageView add_img3;
+    private ImageView add_img3;//not hooked up
     private ImageView backBtn;
     private TextView tvCategory;
-    Spinner spin;
+
     private EditText et_title, et_description, et_price, et_qty;
     private Button auc_btn;
 
@@ -64,14 +64,15 @@ public class list_item extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private CollectionReference fsListedProductRef = db.collection("fsListedProducts");
-    private DocumentReference fsProductRef = db.document("fsListedProducts/Product fs single");
-
+    //private DocumentReference fsProductRef = db.document("fsListedProducts/Product fs single");
+    String userId;
 
 
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 300;
 
     private static final int IMAGE_PICK_GALLERY_CODE = 400;
+
     private static final int IMAGE_PICK_CAMERA_CODE = 500;
 
     private String[] cameraPermissions;
@@ -92,12 +93,10 @@ public class list_item extends AppCompatActivity {
         add_img3 = findViewById(R.id.add_img3);
         auc_btn = findViewById(R.id.auc_btn);
         Button btnPost = findViewById(R.id.btnPost);
-        spin = findViewById(spinner);
         et_title = findViewById(R.id.et_title);
         et_description = findViewById(R.id.item_description);
         et_qty = findViewById(R.id.et_qty);
         et_price = findViewById(R.id.et_price);
-
 
         firebaseAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -107,15 +106,8 @@ public class list_item extends AppCompatActivity {
         progressDialog.setTitle("Please Wait!");
         progressDialog.setCanceledOnTouchOutside(false);
 
-
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-        Spinner mySpinner = findViewById(spinner);
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(list_item.this,
-                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.droplist));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner.setAdapter(myAdapter);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,68 +274,9 @@ public class list_item extends AppCompatActivity {
     }
 
     public void addProductListing() {
-        final String documentId = "9";
-        final String productName = et_title.getText().toString().trim();
-        final String category = tvCategory.getText().toString().trim();
-        final String description = et_description.getText().toString().trim();
-        final int qty = Integer.parseInt(et_qty.getText().toString().trim());
-        double unitPrice = Double.parseDouble(et_price.getText().toString().trim());
-        final String productIcon  = "9999";// = ivProductIcon.getText()
-        final String timestamp = "" + System.currentTimeMillis();
-        final String uid = firebaseAuth.getUid().toString();
 
-
-        final Product product = new Product(documentId, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
-        if (TextUtils.isEmpty(productName)) {
-            et_title.setError("Title required");
-            et_title.requestFocus();
-            return;
-        } else if (TextUtils.isEmpty(category)) {
-            tvCategory.setError("Category required");
-            tvCategory.requestFocus();
-            return;
-        } else if (TextUtils.isEmpty(description)) {
-            et_description.setError("Description required");
-            et_description.requestFocus();
-            return;
-        }
-         else if (qty == 0) {
-            et_qty.setError("Please enter quantity");
-            et_qty.requestFocus();
-            return;
-        } else if (unitPrice <= 5.0) {
-            et_price.setError("Price must be over $5");
-            et_price.requestFocus();
-            return;
-        }
-
-
-        progressDialog.setMessage("Product being Added...");
-        progressDialog.show();
-        // progressDialog.setCanceledOnTouchOutside(false);
-
-
-        //Firestore:
-        db.collection("FS Products").add(product)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        progressDialog.dismiss();
-                        Toast.makeText(list_item.this, "Product has been added to FS", Toast.LENGTH_SHORT).show();
-                        clearData();
-                    }
-                })
-
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(list_item.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-            String filePath = "PRODUCT_IMAGES/" + "" + timestamp;
+            final String timestamp = "" + System.currentTimeMillis();
+            String filePath = "PRODUCT_IMAGES/" + timestamp;
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
             storageRef.putFile(image_uri)
@@ -354,20 +287,56 @@ public class list_item extends AppCompatActivity {
                             Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                             while (!uriTask.isSuccessful()) ;
                             Uri downloadImageUri = uriTask.getResult();
-
+                            userId = firebaseAuth.getCurrentUser().getUid();
                             if (uriTask.isSuccessful()) {
-                                fsListedProductRef.add(product);
-                               // hashMap.put("productIcon", "" + downloadImageUri); //image
-                               // hashMap.put("timestamp", "" + timestamp);
-                             //   hashMap.put("uid", "" + firebaseAuth.getUid());
+                                final String documentId = userId + "" + timestamp;
+                                final String productName = et_title.getText().toString().trim();
+                                final String category = tvCategory.getText().toString().trim();
+                                final String description = et_description.getText().toString().trim();
+                                final int qty = Integer.parseInt(et_qty.getText().toString().trim());
+                                double unitPrice = Double.parseDouble(et_price.getText().toString().trim());
 
-                                //FIRESTORE:
-                                db.collection("FS Products").add(product)
+                                final String productIcon  = downloadImageUri.toString();  //will need to cater for no image but works for now
+
+                                final String timestamp = "" + System.currentTimeMillis();
+                                final String uid = firebaseAuth.getUid();
+
+                                final Product product = new Product(documentId, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
+
+                                if (TextUtils.isEmpty(productName)) {
+                                    et_title.setError("Title required");
+                                    et_title.requestFocus();
+                                    return;
+                                } else if (TextUtils.isEmpty(category)) {
+                                    tvCategory.setError("Category required");
+                                    tvCategory.requestFocus();
+                                    return;
+                                } else if (TextUtils.isEmpty(description)) {
+                                    et_description.setError("Description required");
+                                    et_description.requestFocus();
+                                    return;
+                                }
+                                else if (qty == 0) {
+                                    et_qty.setError("Please enter quantity");
+                                    et_qty.requestFocus();
+                                    return;
+                                } else if (unitPrice <= 5.0) {
+                                    et_price.setError("Price must be over $5");
+                                    et_price.requestFocus();
+                                    return;
+                                }
+
+
+                                progressDialog.setMessage("Product being Added...");
+                                progressDialog.show();
+
+
+                                fsListedProductRef.add(product)
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
                                                 progressDialog.dismiss();
-                                                Toast.makeText(list_item.this, "Product has been added to FS", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(list_item.this, "Product has been added to FSN", Toast.LENGTH_SHORT).show();
                                                 clearData();
                                             }
                                         })
@@ -403,120 +372,3 @@ public class list_item extends AppCompatActivity {
     }
 
 }
-/*
-
-    SCRATCHPAD:
-                    Toast.makeText(list_item.this, "Successfully Listed Product!", Toast.LENGTH_SHORT).show();
-                    userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
-                    DocumentReference documentReference = db.collection("Products").document("userId");
-                    Map<String, Object> product = new HashMap<>();
-                    product.put("Title ", productName);
-                    product.put("Description", description);
-                    product.put("Qty", qty);
-                    product.put("Price", price);
-                    documentReference.set(product).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "Product has been listed for " + userId);
-                        }
-                    });
-                    Intent i = new Intent(list_item.this, HomePage.class );
-                    startActivity(i);
-                    finish();
-                }
-
-}
-
-
-        /*
-        Product product = new Product(productName, description, unitPrice);
-        productListRef.add(product);
-        btnPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //String dropdown, dropdown1;
-
-                String productName = et_title.getText().toString().trim();
-                String description = et_description.getText().toString().trim();
-                String qty = et_qty.getText().toString().trim();
-                String price = et_price.getText().toString().trim();
-
-                if (!validateInputs(productName, description, qty, price)) {
-
-                    CollectionReference productListRef = db.collection("ProductList");
-                    Product product = new Product(productName, description, Integer.parseInt(qty), Double.parseDouble(price));
-
-                    productListRef.add(product)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Toast.makeText(list_item.this, "Product Added", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(list_item.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
-            }
-
-            private boolean validateInputs(String productName, String description, String qty, String price) {
-                if (productName.isEmpty()) {
-                    et_title.setError("Title required");
-                    et_title.requestFocus();
-                    return true;
-                }
-                if (description.isEmpty()) {
-                    et_description.setError("Description required");
-                    et_description.requestFocus();
-                    return true;
-                }
-                if (qty.isEmpty()) {
-                    et_qty.setError("Please enter quantity");
-                    et_qty.requestFocus();
-                    return true;
-                }
-                if (price.isEmpty()) {
-                    et_price.setError("Price must be more than $5");
-                    et_price.requestFocus();
-                    return true;
-                }
-                return false;
-
-            }
-        });
-    }
-
-  /*  @Override
-    protected void onStart() {
-        super.onStart();
-        productListRef.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if(e != null){
-                  //  Toast.makeText(list_item.this, "Error while loading from app locally!", Toast.LENGTH_SHORT).show();
-                  //  Log.d(TAG, e.toString());
-                    return;
-                }
-                String data = "";
-                for(QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshot){
-                    Product product = documentSnapshot.toObject(Product.class);
-                    product.setDocumentId(documentSnapshot.getId());
-                    String documentId = product.getDocumentId();
-                    String productName= product.getProductName();
-                    String description = product.getDescription();
-                  //  int qtyInStock = product.getQtyInStock();
-                    double unitPrice = product.getUnitPrice();
-                   // char shippingFee = product.getShippingFee();
-                   // String sellerId = product.getSellerId();
-
-                    Toast.makeText(list_item.this, "Nowhere to display as yet", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-
-    */
