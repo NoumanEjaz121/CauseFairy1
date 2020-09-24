@@ -27,4 +27,17 @@ public class Constants {
             "Books",
             "Other"
     };
+    public static final String [] causeCategories = {
+            "All Causes",
+            "Furniture",
+            "Electronics",
+            "Clothing",
+            "Bedding",
+            "Kitchen Appliances",
+            "Art",
+            "Motor Vehicles",
+            "Toys",
+            "Books",
+            "Other"
+    };
 }

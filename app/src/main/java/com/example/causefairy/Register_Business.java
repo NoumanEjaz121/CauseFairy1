@@ -54,7 +54,7 @@ public class Register_Business extends AppCompatActivity implements LocationList
     private static final String TAG = "Register_Business";
 
     TextView tvlog;
-    Button btnSub, btnIndividual, bntBusiness, btnGps;
+    Button btnSub, btnIndividual, btnBusiness, btnGps;
     EditText etBusNam, etAbn, etBusEmail, etPassword, etConPassword, etAddResult;
     ImageView add_logo;
 
@@ -95,7 +95,7 @@ public class Register_Business extends AppCompatActivity implements LocationList
         etPassword = findViewById(R.id.etPassword);
         etConPassword = findViewById(R.id.etConPassword);
         btnIndividual = findViewById(R.id.btnIndividual);
-        bntBusiness = findViewById(R.id.btnBusiness);
+        btnBusiness = findViewById(R.id.btnBusiness);
         btnGps = findViewById(R.id.btnGps);
         add_logo = findViewById(R.id.add_logo);
         etAddResult = findViewById(R.id.etAddResult);
@@ -135,20 +135,30 @@ public class Register_Business extends AppCompatActivity implements LocationList
             }
         });
 
-        bntBusiness.setOnClickListener(new View.OnClickListener() {
+        btnBusiness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Register_Business.this, "You are already on Business Registration Page", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register_Business.this, "You are already on Business Reg Page", Toast.LENGTH_SHORT).show();
             }
         });
+
+
         btnSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Register();
             }
         });
-
         btnGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bus = new Intent(Register_Business.this, Register_Cause.class);
+                startActivity(bus);
+            }
+        });
+
+
+     /*   btnGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkLocationPermissions()) {
@@ -158,6 +168,8 @@ public class Register_Business extends AppCompatActivity implements LocationList
                 }
             }
         });
+
+      */
 
 
     }

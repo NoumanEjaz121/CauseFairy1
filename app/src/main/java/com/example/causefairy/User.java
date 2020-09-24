@@ -11,6 +11,8 @@ public class User {
     private String email;
     private String password;
     private String conpass;
+    private String profilePic;
+   // private String timestamp;
 
     public User(){}
 
@@ -23,13 +25,20 @@ public class User {
         this.documentId = documentId;
     }
 
-    public User(String name1, String name2, String email, String password, String conpass) {
+    public User(String documentId, String name1, String name2, String email, String password, String conpass, String profilePic) {
+        this.documentId = documentId;
         this.name1 = name1;
         this.name2 = name2;
         this.email = email;
         this.password = password;
         this.conpass = conpass;
+        this.profilePic = profilePic;
     }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
 
     public String getName1() {
         return name1;

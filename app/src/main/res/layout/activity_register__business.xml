@@ -129,7 +129,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/btn_login"
-                android:text="@string/business"
+                android:text="Cause"
                 android:textAllCaps="false"
                 android:textColor="@color/blue"
                 android:textSize="14dp" />
