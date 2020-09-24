@@ -28,6 +28,7 @@
                 android:src="@drawable/my_logo" />
 
             <ImageView
+                android:id="@+id/ivLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="87dp"
                 android:src="@drawable/my_logo2" />
@@ -292,7 +293,12 @@
                 android:textSize="8dp" />
 
         </LinearLayout>
-
+        <ImageView
+            android:id="@+id/ivProfilePic"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/add_image" />
 
         <Button
             android:id="@+id/btnSignUp"

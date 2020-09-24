@@ -16,6 +16,24 @@ public class User {
 
     public User(){}
 
+    public User(String name1, String name2, String email, String password, String conpass, String profilePic) {
+        this.name1 = name1;
+        this.name2 = name2;
+        this.email = email;
+        this.password = password;
+        this.conpass = conpass;
+        this.profilePic = profilePic;
+    }
+    public User(String name1, String name2, String email, String password, String conpass) {
+        this.name1 = name1;
+        this.name2 = name2;
+        this.email = email;
+        this.password = password;
+        this.conpass = conpass;
+       //no image
+    }
+
+
     @Exclude
     public String getDocumentId() {
         return documentId;

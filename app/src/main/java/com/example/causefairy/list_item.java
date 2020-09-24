@@ -349,7 +349,7 @@ public class list_item extends AppCompatActivity {
                                         });
                             }
                         }
-                    })
+        })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
