@@ -152,15 +152,6 @@ public class Register_Business extends AppCompatActivity implements LocationList
         btnGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent bus = new Intent(Register_Business.this, Register_Cause.class);
-                startActivity(bus);
-            }
-        });
-
-
-     /*   btnGps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 if (checkLocationPermissions()) {
                     detectLocation();
                 } else {
@@ -168,10 +159,6 @@ public class Register_Business extends AppCompatActivity implements LocationList
                 }
             }
         });
-
-      */
-
-
     }
     private String busName, busEmail, abn, pass, ConPass;
     private void Register() {
