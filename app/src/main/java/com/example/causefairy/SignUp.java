@@ -193,19 +193,43 @@ public class SignUp extends AppCompatActivity {
     private void RegisterWithImage(){
         final String timestamp = "" + System.currentTimeMillis();
 
-        String filePath = "PROFILE_PICTURES/" + "" + timestamp;
+        email = "" + timestamp + "PICASSO@gmail.com";
+        password = "3333333";
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
 
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
-        storageRef.putFile(image_uri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    FirebaseUser fUser = firebaseAuth.getCurrentUser();
+                    fUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(SignUp.this, "Verification email has been sent", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Error, email not sent " + e.getMessage());
+                        }
+                    });
 
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful()) ;
-                        Uri downloadImageUri = uriTask.getResult();
-                        if (uriTask.isSuccessful()) {
-                            final String documentId = firebaseAuth.getUid();
+                }
+                Toast.makeText(SignUp.this, "Successfully Registered!", Toast.LENGTH_SHORT).show();
+                userId = firebaseAuth.getCurrentUser().getUid();
+
+                String filePath = "PROFILE_PICTURES/" + "" + timestamp;
+
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
+                storageRef.putFile(image_uri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                                while (!uriTask.isSuccessful()) ;
+                                Uri downloadImageUri = uriTask.getResult();
+                                if (uriTask.isSuccessful()) {
+                                    final String documentId = firebaseAuth.getUid();
 
               /*  final String documentId = userId;
                 final String name1 = etName1.getText().toString();
@@ -215,74 +239,77 @@ public class SignUp extends AppCompatActivity {
                 final String conpass = etConPass.getText().toString();
 */
 
-                            name1 = "PICASSO";
-                            name2 = "PICA";
-                            email = ""+timestamp+"PICASSO@gmail.com";
-                            password = "3333333";
-                            conpass = "3333333";
 
-                            profilePic = downloadImageUri.toString();  //will need to cater for no image but works for now
+                                    name1 = "PICASSO";
+                                    name2 = "PICOOO";
 
-                            final User user = new User(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
+                                    conpass = "3333333";
+                                    profilePic = downloadImageUri.toString();  //will need to cater for no image but works for now
 
-                            if (TextUtils.isEmpty(name1)) {
-                                etName1.setError("Enter your Firstname");
-                                return;
-                            } else if (TextUtils.isEmpty(name2)) {
-                                etName2.setError("Enter your Lastname");
-                                return;
-                            } else if (TextUtils.isEmpty(email)) {
-                                etEmail.setError("Enter your Email");
-                                return;
-                            } else if (TextUtils.isEmpty(password)) {
-                                etPass.setError("Enter your Password");
-                                return;
-                            } else if (TextUtils.isEmpty(conpass)) {
-                                etConPass.setError("Confirm your Password");
-                                return;
-                            } else if (!password.equals(conpass)) {
-                                etPass.setError("Passwords don't match");
-                                return;
-                            } else if (password.length() < 6) {
-                                etPass.setError("Password must be at least 6 characters long");
-                                return;
-                            } else if (!isValidEmail(email)) {
-                                etEmail.setError("Invalid Email");
-                                return;
+
+                                    final User user = new User(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
+
+                                    if (TextUtils.isEmpty(name1)) {
+                                        etName1.setError("Enter your Firstname");
+                                        return;
+                                    } else if (TextUtils.isEmpty(name2)) {
+                                        etName2.setError("Enter your Lastname");
+                                        return;
+                                    } else if (TextUtils.isEmpty(email)) {
+                                        etEmail.setError("Enter your Email");
+                                        return;
+                                    } else if (TextUtils.isEmpty(password)) {
+                                        etPass.setError("Enter your Password");
+                                        return;
+                                    } else if (TextUtils.isEmpty(conpass)) {
+                                        etConPass.setError("Confirm your Password");
+                                        return;
+                                    } else if (!password.equals(conpass)) {
+                                        etPass.setError("Passwords don't match");
+                                        return;
+                                    } else if (password.length() < 6) {
+                                        etPass.setError("Password must be at least 6 characters long");
+                                        return;
+                                    } else if (!isValidEmail(email)) {
+                                        etEmail.setError("Invalid Email");
+                                        return;
+                                    }
+                                    progressDialog.setMessage("Please Wait...");
+                                    progressDialog.show();
+                                    //  progressDialog.setCanceledOnTouchOutside(false);
+
+
+
+                                    ListedUserRef.add(user)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(SignUp.this, "User Registration and Profile Pic was Successful", Toast.LENGTH_SHORT).show();
+                                                    // clearData();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(SignUp.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
                             }
-                            progressDialog.setMessage("Please Wait...");
-                            progressDialog.show();
-                            //  progressDialog.setCanceledOnTouchOutside(false);
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(SignUp.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
 
-
-                            ListedUserRef.add(user)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(SignUp.this, "User Registration and Profile Pic was Successful", Toast.LENGTH_SHORT).show();
-                                            // clearData();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(SignUp.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
-                    }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(SignUp.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
     }
-
     private void clearData () {
         etName1.setText("");
         etName2.setText("");
