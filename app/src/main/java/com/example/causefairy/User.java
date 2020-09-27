@@ -66,16 +66,11 @@ public class User {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
-        timestamp = ""+ System.currentTimeMillis();
-    }
 
     public String getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
+
 
 }

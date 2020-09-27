@@ -153,7 +153,7 @@ Register();
 
          profilePic = "";  //no image
 
-        uid = firebaseAuth.getCurrentUser().getUid();
+        //uid = firebaseAuth.getCurrentUser().getUid();
 
         User user = new User(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
         if (TextUtils.isEmpty(name1)) {
@@ -311,6 +311,7 @@ Register();
                     });
                     Toast.makeText(SignUp.this, "Successfully Registered!", Toast.LENGTH_SHORT).show();
                     userId = firebaseAuth.getCurrentUser().getUid();
+                    uid = userId;
                         User user = new User(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
                         ListedUserRef.add(user)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
