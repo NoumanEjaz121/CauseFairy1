@@ -131,9 +131,9 @@ public class SignUp extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterNoImage();
-             // addUser();
-              //  RegistrationType();
+               // RegisterNoImage();
+
+              RegistrationType();
             }
         });
     }
@@ -354,19 +354,22 @@ public class SignUp extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
                             if(image_uri == null) {
-                                RegisterNoImage();
 
                                 Toast.makeText(SignUp.this, "Thankyooooooou for Registering", Toast.LENGTH_SHORT).show();
-
+                                RegisterNoImage();
                             }
-                            else
+                            else{
                                 RegisterWithImage();
-
+                            }
                         }
                         else if(which ==1){
-                            Toast.makeText(SignUp.this, "Please complete Business Details", Toast.LENGTH_SHORT).show();
-                            Intent bus = new Intent(SignUp.this, Register_Business.class);
-                            startActivity(bus);
+                            if(image_uri == null) {
+                                RegisterNoImage();
+                            }
+                            else{
+                                RegisterWithImage();
+                            }
+
                         }
                         Toast.makeText(SignUp.this, "ERRR", Toast.LENGTH_SHORT).show();
                     }
