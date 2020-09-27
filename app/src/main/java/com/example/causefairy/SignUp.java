@@ -131,7 +131,7 @@ public class SignUp extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-Register();
+                RegisterNoImage();
              // addUser();
               //  RegistrationType();
             }
@@ -141,21 +141,29 @@ Register();
     private String documentId, name1, name2, email, password, conpass, profilePic, uid;
     private String timestamp = ""+System.currentTimeMillis();
 
-    private void Register() {
+    private void RegisterNoImage() {
 
 
          documentId = userId;
+
+
+          /*  final String documentId = userId;
+            final String name1 = etName1.getText().toString();
+            final String name2 = etName2.getText().toString();
+            final String email = etEmail.getText().toString();
+            final String password = etPass.getText().toString();
+            final String conpass = etConPass.getText().toString();
+*/
          name1 = "MONA";
          name2 = "LISA";
          email = ""+timestamp+"MONAlisa@gmail.com";
          password = "3333333";
          conpass = "3333333";
 
-         profilePic = "";  //no image
+         profilePic = "";
 
-        //uid = firebaseAuth.getCurrentUser().getUid();
 
-        User user = new User(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
+        User user = new User(documentId,name1, name2, email, password, conpass, profilePic, timestamp, uid);
         if (TextUtils.isEmpty(name1)) {
             etName1.setError("Enter your Firstname");
             return;
@@ -184,7 +192,7 @@ Register();
         CreateAuthUser();
 
     }
-    private void addUser(){
+    private void RegisterWithImage(){
         final String timestamp = "" + System.currentTimeMillis();
 
         String filePath = "PROFILE_PICTURES/" + "" + timestamp;
@@ -345,10 +353,14 @@ Register();
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
+                            if(image_uri == null) {
+                                RegisterNoImage();
 
-                            Register();
-                            CreateAuthUser();
-                            Toast.makeText(SignUp.this, "Thankyou for Registering", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUp.this, "Thankyooooooou for Registering", Toast.LENGTH_SHORT).show();
+
+                            }
+                            else
+                                RegisterWithImage();
 
                         }
                         else if(which ==1){
