@@ -140,26 +140,22 @@ public class SignUp extends AppCompatActivity {
     private String timestamp = ""+System.currentTimeMillis();
 
     private void RegisterNoImage() {
-
-
          documentId = userId;
-
-
           /*  final String documentId = userId;
             final String name1 = etName1.getText().toString();
             final String name2 = etName2.getText().toString();
             final String email = etEmail.getText().toString();
             final String password = etPass.getText().toString();
             final String conpass = etConPass.getText().toString();
+            profilePic = "";
 */
+        //Temp Hard Coded:
          name1 = "MONA";
          name2 = "LISA";
          email = ""+timestamp+"MONAlisa@gmail.com";
          password = "3333333";
          conpass = "3333333";
-
-         profilePic = "";
-
+         profilePic = ""; //no image
 
         User user = new User(documentId,name1, name2, email, password, conpass, profilePic, timestamp, uid);
         if (TextUtils.isEmpty(name1)) {
@@ -188,13 +184,15 @@ public class SignUp extends AppCompatActivity {
             return;
         }
         CreateAuthUserNoImage();
-
     }
+
     private void RegisterWithImage(){
         final String timestamp = "" + System.currentTimeMillis();
-
+       // final String email = etEmail.getText().toString();
+      //  final String password = etPass.getText().toString();
         email = "" + timestamp + "PICASSO@gmail.com";
         password = "3333333";
+
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -216,7 +214,7 @@ public class SignUp extends AppCompatActivity {
                 }
                 Toast.makeText(SignUp.this, "Successfully Registered!", Toast.LENGTH_SHORT).show();
                 userId = firebaseAuth.getCurrentUser().getUid();
-
+                uid = userId;
                 String filePath = "PROFILE_PICTURES/" + "" + timestamp;
 
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
@@ -231,20 +229,19 @@ public class SignUp extends AppCompatActivity {
                                 if (uriTask.isSuccessful()) {
                                     final String documentId = firebaseAuth.getUid();
 
-              /*  final String documentId = userId;
-                final String name1 = etName1.getText().toString();
-                final String name2 = etName2.getText().toString();
-                final String email = etEmail.getText().toString();
-                final String password = etPass.getText().toString();
-                final String conpass = etConPass.getText().toString();
-*/
+                                  /*  final String documentId = userId;
+                                    final String name1 = etName1.getText().toString();
+                                    final String name2 = etName2.getText().toString();
+                                  //email & password are above
+                                    final String conpass = etConPass.getText().toString();
+                                    profilePic = downloadImageUri.toString();
+                            */
 
-
+                                    //Temp Hard Coded:
                                     name1 = "PICASSO";
                                     name2 = "PICOOO";
-
                                     conpass = "3333333";
-                                    profilePic = downloadImageUri.toString();  //will need to cater for no image but works for now
+                                    profilePic = downloadImageUri.toString();
 
 
                                     final User user = new User(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
@@ -276,16 +273,14 @@ public class SignUp extends AppCompatActivity {
                                     }
                                     progressDialog.setMessage("Please Wait...");
                                     progressDialog.show();
-                                    //  progressDialog.setCanceledOnTouchOutside(false);
-
-
+                                    progressDialog.setCanceledOnTouchOutside(false);
 
                                     ListedUserRef.add(user)
                                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                 @Override
                                                 public void onSuccess(DocumentReference documentReference) {
                                                     progressDialog.dismiss();
-                                                    Toast.makeText(SignUp.this, "User Registration and Profile Pic was Successful", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(SignUp.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
                                                     // clearData();
                                                 }
                                             })
@@ -308,6 +303,8 @@ public class SignUp extends AppCompatActivity {
                         });
             }
         });
+        Intent bus = new Intent(SignUp.this, Register_Business.class);
+        startActivity(bus);
 
     }
     private void clearData () {
@@ -396,7 +393,7 @@ public class SignUp extends AppCompatActivity {
                             }
 
                         }
-                        Toast.makeText(SignUp.this, "ERRR", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUp.this, "Great Decision!", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .show();
