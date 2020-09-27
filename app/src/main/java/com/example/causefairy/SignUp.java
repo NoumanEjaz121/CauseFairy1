@@ -300,12 +300,9 @@ public class SignUp extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 Toast.makeText(SignUp.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                        });
+                    });
             }
         });
-        Intent bus = new Intent(SignUp.this, Register_Business.class);
-        startActivity(bus);
-
     }
     private void clearData () {
         etName1.setText("");
@@ -367,6 +364,14 @@ public class SignUp extends AppCompatActivity {
     private Boolean isValidEmail(CharSequence target){
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
+
+    private void goToBusinessPage(){
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
+        Intent bus = new Intent(SignUp.this, Register_Business.class);
+        startActivity(bus);
+    }
     private void RegistrationType(){
         String[] options = {"Register", "Register as a Business"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -391,7 +396,6 @@ public class SignUp extends AppCompatActivity {
                             else{
                                 RegisterWithImage();
                             }
-
                         }
                         Toast.makeText(SignUp.this, "Great Decision!", Toast.LENGTH_SHORT).show();
                     }

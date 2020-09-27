@@ -191,25 +191,7 @@ public class Register_Business extends AppCompatActivity implements LocationList
        // progressDialog.setCanceledOnTouchOutside(false);
         final String timestamp = "" + System.currentTimeMillis();
 
-        firebaseAuth.createUserWithEmailAndPassword(busEmail, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
 
-                    FirebaseUser fUser = firebaseAuth.getCurrentUser();
-                    fUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(Register_Business.this, "Verification email has been sent", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "Error, email not sent " + e.getMessage());
-                        }
-                    });
-
-            }
 
                 Toast.makeText(Register_Business.this, "Successfully Registered!", Toast.LENGTH_SHORT).show();
                 userId = firebaseAuth.getCurrentUser().getUid();
@@ -225,7 +207,7 @@ public class Register_Business extends AppCompatActivity implements LocationList
                         hashMap.put("uid", "" + firebaseAuth.getUid());
 
                         //Firestore:
-                        db.collection("Business Users").add(hashMap)
+                        db.collection("UsersB").add(hashMap)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
@@ -265,7 +247,7 @@ public class Register_Business extends AppCompatActivity implements LocationList
                                             hashMap.put("uid", "" + firebaseAuth.getUid());
 
                                             //FIRESTORE:
-                                            db.collection("Business Users").add(hashMap)
+                                            db.collection("UsersB").add(hashMap)
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                         @Override
                                                         public void onSuccess(DocumentReference documentReference) {
@@ -291,9 +273,9 @@ public class Register_Business extends AppCompatActivity implements LocationList
                                         Toast.makeText(Register_Business.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                    }}
-                });
-    }
+                    }
+}
+
                 private void clearData () {
                     etBusNam.setText("");
                     etAbn.setText("");
