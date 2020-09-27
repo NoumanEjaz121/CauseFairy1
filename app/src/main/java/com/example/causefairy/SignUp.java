@@ -131,8 +131,6 @@ public class SignUp extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // RegisterNoImage();
-
               RegistrationType();
             }
         });
@@ -189,7 +187,7 @@ public class SignUp extends AppCompatActivity {
             etEmail.setError("Invalid Email");
             return;
         }
-        CreateAuthUser();
+        CreateAuthUserNoImage();
 
     }
     private void RegisterWithImage(){
@@ -297,7 +295,7 @@ public class SignUp extends AppCompatActivity {
         image_uri = null;
     }
 
-    private void CreateAuthUser(){
+    private void CreateAuthUserNoImage(){
 
 
       firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -326,7 +324,7 @@ public class SignUp extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
                                         progressDialog.dismiss();
-                                        Toast.makeText(SignUp.this, "User Registration without Profile Pic was Successful", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUp.this, "User Registration without NO Pic was Successful", Toast.LENGTH_SHORT).show();
                                         // clearData();
                                     }
                                 })
@@ -355,7 +353,7 @@ public class SignUp extends AppCompatActivity {
                         if(which == 0){
                             if(image_uri == null) {
 
-                                Toast.makeText(SignUp.this, "Thankyooooooou for Registering", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUp.this, "Thankyou for Signing Up!", Toast.LENGTH_SHORT).show();
                                 RegisterNoImage();
                             }
                             else{
