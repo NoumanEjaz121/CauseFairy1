@@ -12,27 +12,10 @@ public class User {
     private String password;
     private String conpass;
     private String profilePic;
-   // private String timestamp;
+    private String timestamp;
+    private String uid;
 
     public User(){}
-
-    public User(String name1, String name2, String email, String password, String conpass, String profilePic) {
-        this.name1 = name1;
-        this.name2 = name2;
-        this.email = email;
-        this.password = password;
-        this.conpass = conpass;
-        this.profilePic = profilePic;
-    }
-    public User(String name1, String name2, String email, String password, String conpass) {
-        this.name1 = name1;
-        this.name2 = name2;
-        this.email = email;
-        this.password = password;
-        this.conpass = conpass;
-       //no image
-    }
-
 
     @Exclude
     public String getDocumentId() {
@@ -43,7 +26,7 @@ public class User {
         this.documentId = documentId;
     }
 
-    public User(String documentId, String name1, String name2, String email, String password, String conpass, String profilePic) {
+    public User(String documentId, String name1, String name2, String email, String password, String conpass, String profilePic, String timestamp, String uid) {
         this.documentId = documentId;
         this.name1 = name1;
         this.name2 = name2;
@@ -51,6 +34,8 @@ public class User {
         this.password = password;
         this.conpass = conpass;
         this.profilePic = profilePic;
+        this.timestamp = timestamp;
+        this.uid = uid;
     }
 
     public String getProfilePic() {
@@ -77,4 +62,20 @@ public class User {
     public String getConpass() {
         return conpass;
     }
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        timestamp = ""+ System.currentTimeMillis();
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
 }

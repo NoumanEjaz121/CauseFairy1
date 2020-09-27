@@ -188,7 +188,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_reg:
-                Intent intent = new Intent(HomePage.this, Register_Business.class);
+                Intent intent = new Intent(HomePage.this, SignUp.class);
                 startActivity(intent);
                 break;
             case R.id.nav_policy:

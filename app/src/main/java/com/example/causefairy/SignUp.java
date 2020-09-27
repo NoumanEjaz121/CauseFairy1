@@ -131,24 +131,31 @@ public class SignUp extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                RegistrationType();
+Register();
+             // addUser();
+              //  RegistrationType();
             }
         });
     }
 
-    private String name1, name2, email, password, conpass, profilePic;
+    private String documentId, name1, name2, email, password, conpass, profilePic, uid;
+    private String timestamp = ""+System.currentTimeMillis();
+
     private void Register() {
-       // String documentId = userId;
+
+
+         documentId = userId;
          name1 = "MONA";
          name2 = "LISA";
-         email = etEmail.getText().toString();
+         email = ""+timestamp+"MONAlisa@gmail.com";
          password = "3333333";
          conpass = "3333333";
 
          profilePic = "";  //no image
 
-        User user = new User(name1, name2, email, password, conpass, profilePic);
+        uid = firebaseAuth.getCurrentUser().getUid();
+
+        User user = new User(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
         if (TextUtils.isEmpty(name1)) {
             etName1.setError("Enter your Firstname");
             return;
@@ -174,7 +181,8 @@ public class SignUp extends AppCompatActivity {
             etEmail.setError("Invalid Email");
             return;
         }
-        addUser();
+        CreateAuthUser();
+
     }
     private void addUser(){
         final String timestamp = "" + System.currentTimeMillis();
@@ -191,7 +199,7 @@ public class SignUp extends AppCompatActivity {
                         while (!uriTask.isSuccessful()) ;
                         Uri downloadImageUri = uriTask.getResult();
                         if (uriTask.isSuccessful()) {
-
+                            final String documentId = firebaseAuth.getUid();
 
               /*  final String documentId = userId;
                 final String name1 = etName1.getText().toString();
@@ -201,15 +209,15 @@ public class SignUp extends AppCompatActivity {
                 final String conpass = etConPass.getText().toString();
 */
 
-                            name1 = "MONA";
-                            name2 = "LISA";
-                            email = etEmail.getText().toString();
+                            name1 = "PICASSO";
+                            name2 = "PICA";
+                            email = ""+timestamp+"PICASSO@gmail.com";
                             password = "3333333";
                             conpass = "3333333";
 
                             profilePic = downloadImageUri.toString();  //will need to cater for no image but works for now
 
-                            final User user = new User(name1, name2, email, password, conpass, profilePic);
+                            final User user = new User(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
 
                             if (TextUtils.isEmpty(name1)) {
                                 etName1.setError("Enter your Firstname");
@@ -269,84 +277,6 @@ public class SignUp extends AppCompatActivity {
             });
     }
 
-
-  /*  private void RegisterWithoutImage(){
-
-
-                          userId = firebaseAuth.getCurrentUser().getUid();
-                            final String documentId = userId;
-                            final String name1 = etName1.getText().toString();
-                            final String name2 = etName2.getText().toString();
-                            final String email = etEmail.getText().toString();
-                            final String password = etPass.getText().toString();
-                            final String conpass = etConPass.getText().toString();
-
-
-        String documentId = "44";
-        String name1 = "JIMMY";
-        String name2 = "BLOGGS";
-        final String email = etEmail.getText().toString();
-        String password = "3333333";
-        String conpass = "3333333";
-
-                            String profilePic= null;
-                            User user = new User(documentId, name1, name2, email, password, conpass, profilePic);
-                            if(TextUtils.isEmpty(name1)){
-                                etName1.setError("Enter your Firstname");
-                                return;
-                            }
-                            else if(TextUtils.isEmpty(name2)){
-                                etName2.setError("Enter your Lastname");
-                                return;
-                            }
-                            else if(TextUtils.isEmpty(email)){
-                                etEmail.setError("Enter your Email");
-                                return;
-                            }
-                            else if(TextUtils.isEmpty(password)){
-                                etPass.setError("Enter your Password");
-                                return;
-                            }
-                            else if(TextUtils.isEmpty(conpass)){
-                                etConPass.setError("Confirm your Password");
-                                return;
-                            }
-                            else if(!password.equals(conpass)){
-                                etPass.setError("Passwords don't match");
-                                return;
-                            }
-                            else if(password.length()<6){
-                                etPass.setError("Password must be at least 6 characters long");
-                                return;
-                            }
-                            else if(!isValidEmail(email)){
-                                etEmail.setError("Invalid Email");
-                                return;
-                            }
-                            progressDialog.setMessage("Please Wait...");
-                            progressDialog.show();
-                            //  progressDialog.setCanceledOnTouchOutside(false);
-
-
-                            ListedUserRef.add(user)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(SignUp.this, "User Registration without Profile Pic was Successful", Toast.LENGTH_SHORT).show();
-                                            // clearData();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(SignUp.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
-*/
-
     private void clearData () {
         etName1.setText("");
         etName2.setText("");
@@ -381,6 +311,23 @@ public class SignUp extends AppCompatActivity {
                     });
                     Toast.makeText(SignUp.this, "Successfully Registered!", Toast.LENGTH_SHORT).show();
                     userId = firebaseAuth.getCurrentUser().getUid();
+                        User user = new User(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
+                        ListedUserRef.add(user)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(SignUp.this, "User Registration without Profile Pic was Successful", Toast.LENGTH_SHORT).show();
+                                        // clearData();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(SignUp.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                 }
             }
         });

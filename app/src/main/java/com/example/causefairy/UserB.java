@@ -14,8 +14,8 @@ public class UserB extends User{
 
     public UserB(){}
 
-    public UserB(String documentId, String name1, String name2, String email, String password, String conpass, String profilePic, String businessId, String businessName, int abn, String email1, String password1, String conpass1, String busLogo) {
-        super(documentId, name1, name2, email, password, conpass, profilePic);
+    public UserB(String documentId, String name1, String name2, String email, String password, String conpass, String profilePic, String timestamp, String uid, String businessId, String businessName, int abn, String email1, String password1, String conpass1, String busLogo) {
+        super(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid);
         this.businessId = businessId;
         this.businessName = businessName;
         this.abn = abn;
