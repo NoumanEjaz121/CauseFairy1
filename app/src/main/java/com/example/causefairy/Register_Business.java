@@ -123,13 +123,14 @@ public class Register_Business extends AppCompatActivity implements LocationList
         btnBusiness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Register_Business.this, "You are already on Business Reg Page", Toast.LENGTH_SHORT).show();
+                Intent bus = new Intent(Register_Business.this, Register_Cause.class);
+                startActivity(bus);
             }
         });
         tvlog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent bus = new Intent(Register_Business.this, Register_Cause.class);
+                Intent bus = new Intent(Register_Business.this, MainActivity.class);
                 startActivity(bus);
             }
         });

@@ -53,10 +53,10 @@ public class Register_Cause extends AppCompatActivity {
 
     private ImageView ivLogo;
 
-    private TextView tvCategory;
+    private TextView tvCategory, tvlog;
     private EditText etDescription, etPostcode, etPhone, etACNC;
     private ImageView add_logo;
-    private Button btnSub, btnIndividual, btnBusiness;
+    private Button btnSub;
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
@@ -85,11 +85,10 @@ public class Register_Cause extends AppCompatActivity {
 
         ivLogo = findViewById(R.id.ivLogo);//backBtn
         tvCategory = findViewById(R.id.tvCategory);
+        tvlog = findViewById(R.id.tvlog);
         add_logo = findViewById(R.id.add_logo);
         etDescription = findViewById(R.id.etDescription);
         btnSub = findViewById(R.id.btnSub);
-        btnBusiness = findViewById(R.id.btnBusiness);
-        btnIndividual = findViewById(R.id.btnIndividual);
         etPostcode = findViewById(R.id.etPostcode);
         etPhone = findViewById(R.id.etPhone);
         etACNC = findViewById(R.id.etACNC);
@@ -109,6 +108,13 @@ public class Register_Cause extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        tvlog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bus = new Intent(Register_Cause.this, MainActivity.class);
+                startActivity(bus);
             }
         });
         add_logo.setOnClickListener(new View.OnClickListener() {
@@ -142,20 +148,6 @@ private void categoryDialog() {
                 }
             })
             .show();
-
-    btnIndividual.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent bus = new Intent(Register_Cause.this, SignUp.class);
-            startActivity(bus);
-        }
-    });
-    btnBusiness.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(Register_Cause.this, "You are already on Business Reg Page", Toast.LENGTH_SHORT).show();
-        }
-    });
 
     add_logo.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -307,7 +299,7 @@ private void categoryDialog() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
                                                 progressDialog.dismiss();
-                                                Toast.makeText(Register_Cause.this, "Cause Registered was Successful", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(Register_Cause.this, "Cause Registeration was Successful", Toast.LENGTH_SHORT).show();
                                                 clearData();
                                             }
                                         })
@@ -337,7 +329,7 @@ private void categoryDialog() {
         etPhone.setText("");
         etACNC.setText("");
 
-        add_logo.setImageResource(R.drawable.add_image);// needs fixing but i have no idea re drawable stuff??
+        add_logo.setImageResource(R.drawable.add_image);
 
         image_uri = null;
     }

@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,7 +49,7 @@ public class SignUp extends AppCompatActivity {
 
     private EditText etEmail, etName1, etName2, etPass, etConPass;
     private ImageView ivProfilePic;
-    Button btnSignUp, btnInd, btnBus;
+    Button btnSignUp, btnBus;
     TextView tvLogin;
 
     private ProgressDialog progressDialog;
@@ -83,7 +84,6 @@ public class SignUp extends AppCompatActivity {
         etConPass = findViewById(R.id.etConPass);
         btnSignUp = findViewById(R.id.btnSignUp);
         tvLogin = findViewById(R.id.tvLogin);
-        btnInd = findViewById(R.id.btnInd);
         btnBus = findViewById(R.id.btnBus);
         ivProfilePic = findViewById(R.id.ivProfilePic);
 
@@ -98,19 +98,12 @@ public class SignUp extends AppCompatActivity {
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        btnInd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(SignUp.this, "You are already on Individual Registration Page", Toast.LENGTH_LONG).show();
-          }
-        });
-
         btnBus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent bus = new Intent(SignUp.this, Register_Business.class);
-                startActivity(bus);
-            }
+                    Intent bus = new Intent(SignUp.this, Register_Business.class);
+                    startActivity(bus);
+                }
         });
 
         tvLogin.setOnClickListener(new View.OnClickListener() {
@@ -185,6 +178,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void RegisterWithImage(){
+
         final String timestamp = "" + System.currentTimeMillis();
        // final String email = etEmail.getText().toString();
       //  final String password = etPass.getText().toString();
@@ -363,15 +357,8 @@ public class SignUp extends AppCompatActivity {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
-    private void goToBusinessPage(){
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.show();
-        progressDialog.setCanceledOnTouchOutside(false);
-        Intent bus = new Intent(SignUp.this, Register_Business.class);
-        startActivity(bus);
-    }
     private void RegistrationType(){
-        String[] options = {"Register", "Register as a Business"};
+        String[] options = {"Register Now!"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Please Select:")
                 .setItems(options, new DialogInterface.OnClickListener() {
@@ -379,22 +366,13 @@ public class SignUp extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
                             if(image_uri == null) {
+                                RegisterNoImage();
+                            }
+                            else{
+                                RegisterWithImage();
+                            }
+                        }
 
-                                Toast.makeText(SignUp.this, "Thankyou for Signing Up!", Toast.LENGTH_SHORT).show();
-                                RegisterNoImage();
-                            }
-                            else{
-                                RegisterWithImage();
-                            }
-                        }
-                        else if(which ==1){
-                            if(image_uri == null) {
-                                RegisterNoImage();
-                            }
-                            else{
-                                RegisterWithImage();
-                            }
-                        }
                         Toast.makeText(SignUp.this, "Great Decision!", Toast.LENGTH_SHORT).show();
                     }
                 })
