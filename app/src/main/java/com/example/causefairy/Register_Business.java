@@ -142,7 +142,7 @@ public class Register_Business extends AppCompatActivity implements LocationList
         btnSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterBwithImage();
+                Register();
             }
         });
         btnGps.setOnClickListener(new View.OnClickListener() {
@@ -160,160 +160,157 @@ public class Register_Business extends AppCompatActivity implements LocationList
     private String businessId, busName, busEmail, pass, conPass, busLogo;
     private int abn;
 
-    private void RegisterBwithImage(){
+    private void Register(){
         progressDialog.setMessage("PLease Wait...");
         progressDialog.show();
-       // progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+
         final String timestamp = "" + System.currentTimeMillis();
         final String uid = firebaseAuth.getUid();
         businessId = uid;
+        userId = firebaseAuth.getCurrentUser().getUid();
 
-
-
-                Toast.makeText(Register_Business.this, "Successfully Registered!", Toast.LENGTH_SHORT).show();
-                userId = firebaseAuth.getCurrentUser().getUid();
-
-                    if (image_uri == null) {
-                        documentId = userId;
-                        /*busName = etBusNam.getText().toString();
-                        abn = Integer.parseInt(etAbn.getText().toString().trim());
-                        busEmail = etBusEmail.getText().toString();
-                        pass = etPassword.getText().toString();
-                        conPass = etConPassword.getText().toString();
-                        busLogo = "";
+    if (image_uri == null) {
+        documentId = userId;
+        /*busName = etBusNam.getText().toString();
+        abn = Integer.parseInt(etAbn.getText().toString().trim());
+        busEmail = etBusEmail.getText().toString();
+        pass = etPassword.getText().toString();
+        conPass = etConPassword.getText().toString();
+        busLogo = "";
 */
-                        //Temp Hard Coded:
-                        busName = "CADBURY CHOCOLATE LTD";
-                        abn = 36363636;
-                        busEmail = ""+timestamp+ "cadburyChocolate@yahoo.com";
-                        pass = "111111";
-                        conPass = "111111";
-                        busLogo = "";
+        //Temp Hard Coded:
+        busName = "CADBURY CHOCOLATE LTD";
+        abn = 36363636;
+        busEmail = ""+timestamp+ "cadburyChocolate@yahoo.com";
+        pass = "111111";
+        conPass = "111111";
+        busLogo = "";
 
-                        UserB userb= new UserB(documentId,name1, name2, email, password, conpass, profilePic, timestamp, uid, businessId, busName, abn, busEmail, pass, conPass, busLogo);
+        UserB userb= new UserB(documentId,name1, name2, email, password, conpass, profilePic, timestamp, uid, businessId, busName, abn, busEmail, pass, conPass, busLogo);
 
-                        if (busName.equals("")) {
-                            etBusNam.setError("Business Name is Required");
-                        } else if (abn==0) {
-                            etAbn.setError("ABN No is Required");
-                        } else if (busEmail.equals("")) {
-                            etBusEmail.setError("Email is Required");
-                        } else if ((!busEmail.contains("@"))) { //|| (!busEmail.contains(".au"))) {
-                            etBusEmail.setError("Please Enter a valid Email Address.For example coburg@officeworks.com.au");
-                        } else if (pass.equals("")) {
-                            etPassword.setError("Password is Required");
-                        } else if (conPass.equals("")) {
-                            etConPassword.setError("Confirm Password is Required");
-                        } else if (!conPass.equals(pass)) {
-                            etConPassword.setError("Passwords do not match");
-                        }
+        if (busName.equals("")) {
+            etBusNam.setError("Business Name is Required");
+        } else if (abn==0) {
+            etAbn.setError("ABN No is Required");
+        } else if (busEmail.equals("")) {
+            etBusEmail.setError("Email is Required");
+        } else if ((!busEmail.contains("@"))) { //|| (!busEmail.contains(".au"))) {
+            etBusEmail.setError("Please Enter a valid Email Address.For example coburg@officeworks.com.au");
+        } else if (pass.equals("")) {
+            etPassword.setError("Password is Required");
+        } else if (conPass.equals("")) {
+            etConPassword.setError("Confirm Password is Required");
+        } else if (!conPass.equals(pass)) {
+            etConPassword.setError("Passwords do not match");
+        }
 
-                        //Firestore:
-                       BusinessUserRef.add(userb)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(Register_Business.this, "Business has been Registered", Toast.LENGTH_SHORT).show();
-                                        clearData();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(Register_Business.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else {
-                        String filePath = "BUSINESS_LOGOS/" + "" + timestamp;
-
-                        StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
-                        storageRef.putFile(image_uri)
-                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                                        while (!uriTask.isSuccessful()) ;
-                                        Uri downloadImageUri = uriTask.getResult();
-
-                                        if (uriTask.isSuccessful()) {
-                                            documentId = userId;
-                                            /*busName = etBusNam.getText().toString();
-                                            abn = Integer.parseInt(etAbn.getText().toString().trim());
-                                            busEmail = etBusEmail.getText().toString();
-                                            pass = etPassword.getText().toString();
-                                            conPass = etConPassword.getText().toString();
-                                            busLogo = "" + downloadImageUri;
-                    */
-                                            //Temp Hard Coded:
-                                            busName = "CADBURY CHOCOLATE LTD";
-                                            abn = 36363636;
-                                            busEmail = ""+timestamp+ "cadburyChocolate@yahoo.com";
-                                            pass = "111111";
-                                            conPass = "111111";
-                                            busLogo = "" + downloadImageUri;
-
-                                            UserB userb= new UserB(documentId,name1, name2, email, password, conpass, profilePic, timestamp, uid, businessId, busName, abn, busEmail, pass, conPass, busLogo);
-
-                                            if (busName.equals("")) {
-                                                etBusNam.setError("Business Name is Required");
-                                            } else if (abn==0) {
-                                                etAbn.setError("ABN No is Required");
-                                            } else if (busEmail.equals("")) {
-                                                etBusEmail.setError("Email is Required");
-                                            } else if ((!busEmail.contains("@"))) { //|| (!busEmail.contains(".au"))) {
-                                                etBusEmail.setError("Please Enter a valid Email Address.For example coburg@officeworks.com.au");
-                                            } else if (pass.equals("")) {
-                                                etPassword.setError("Password is Required");
-                                            } else if (conPass.equals("")) {
-                                                etConPassword.setError("Confirm Password is Required");
-                                            } else if (!conPass.equals(pass)) {
-                                                etConPassword.setError("Passwords do not match");
-                                            }
-
-                                            //FIRESTORE:
-                                            BusinessUserRef.add(userb)
-                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                        @Override
-                                                        public void onSuccess(DocumentReference documentReference) {
-                                                            progressDialog.dismiss();
-                                                            Toast.makeText(Register_Business.this, "Business has been Registered", Toast.LENGTH_SHORT).show();
-                                                            clearData();
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            progressDialog.dismiss();
-                                                            Toast.makeText(Register_Business.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
-                                        }
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(Register_Business.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+        //Firestore:
+       BusinessUserRef.add(userb)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        progressDialog.dismiss();
+                        Toast.makeText(Register_Business.this, "Business has been Registered", Toast.LENGTH_SHORT).show();
+                        clearData();
                     }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(Register_Business.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    } else {
+        String filePath = "BUSINESS_LOGOS/" + "" + timestamp;
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
+        storageRef.putFile(image_uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful()) ;
+                        Uri downloadImageUri = uriTask.getResult();
+
+                        if (uriTask.isSuccessful()) {
+                            documentId = userId;
+                            /*busName = etBusNam.getText().toString();
+                            abn = Integer.parseInt(etAbn.getText().toString().trim());
+                            busEmail = etBusEmail.getText().toString();
+                            pass = etPassword.getText().toString();
+                            conPass = etConPassword.getText().toString();
+                            busLogo = "" + downloadImageUri;
+    */
+                            //Temp Hard Coded:
+                            busName = "CADBURY CHOCOLATE LTD";
+                            abn = 36363636;
+                            busEmail = ""+timestamp+ "cadburyChocolate@yahoo.com";
+                            pass = "111111";
+                            conPass = "111111";
+                            busLogo = "" + downloadImageUri;
+
+                            UserB userb= new UserB(documentId,name1, name2, email, password, conpass, profilePic, timestamp, uid, businessId, busName, abn, busEmail, pass, conPass, busLogo);
+
+                            if (busName.equals("")) {
+                                etBusNam.setError("Business Name is Required");
+                            } else if (abn==0) {
+                                etAbn.setError("ABN No is Required");
+                            } else if (busEmail.equals("")) {
+                                etBusEmail.setError("Email is Required");
+                            } else if ((!busEmail.contains("@"))) { //|| (!busEmail.contains(".au"))) {
+                                etBusEmail.setError("Please Enter a valid Email Address.For example coburg@officeworks.com.au");
+                            } else if (pass.equals("")) {
+                                etPassword.setError("Password is Required");
+                            } else if (conPass.equals("")) {
+                                etConPassword.setError("Confirm Password is Required");
+                            } else if (!conPass.equals(pass)) {
+                                etConPassword.setError("Passwords do not match");
+                            }
+
+                            //FIRESTORE:
+                            BusinessUserRef.add(userb)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(Register_Business.this, "Business has been Registered", Toast.LENGTH_SHORT).show();
+                                            clearData();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(Register_Business.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(Register_Business.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
 
-                private void clearData () {
-                    etBusNam.setText("");
-                    etAbn.setText("");
-                    etBusEmail.setText("");
-                    etPassword.setText("");
-                    etConPassword.setText("");
+    private void clearData () {
+        etBusNam.setText("");
+        etAbn.setText("");
+        etBusEmail.setText("");
+        etPassword.setText("");
+        etConPassword.setText("");
 
-                    add_logo.setImageResource(R.drawable.add_image);// needs fixing but i have no idea re drawable stuff??
+        add_logo.setImageResource(R.drawable.add_image);// needs fixing but i have no idea re drawable stuff??
 
-                    image_uri = null;
-                }
+        image_uri = null;
+    }
 
     private Boolean isValidEmail(CharSequence target){
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());

@@ -43,6 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static com.example.causefairy.R.id.ivProductIcon;
@@ -55,13 +56,13 @@ public class Register_Cause extends AppCompatActivity {
     private TextView tvCategory;
     private EditText etDescription, etPostcode, etPhone, etACNC;
     private ImageView add_logo;
-    private Button btnSub;
+    private Button btnSub, btnIndividual, btnBusiness;
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private CollectionReference ListedCauseRef = db.collection("Causes");
+    private CollectionReference CauseUserRef = db.collection("UserC");
     String userId;
 
     private static final int CAMERA_REQUEST_CODE = 200;
@@ -87,6 +88,8 @@ public class Register_Cause extends AppCompatActivity {
         add_logo = findViewById(R.id.add_logo);
         etDescription = findViewById(R.id.etDescription);
         btnSub = findViewById(R.id.btnSub);
+        btnBusiness = findViewById(R.id.btnBusiness);
+        btnIndividual = findViewById(R.id.btnIndividual);
         etPostcode = findViewById(R.id.etPostcode);
         etPhone = findViewById(R.id.etPhone);
         etACNC = findViewById(R.id.etACNC);
@@ -123,11 +126,11 @@ public class Register_Cause extends AppCompatActivity {
         btnSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addCauseListing();
+                Register();
             }
         });
 }
-private void categoryDialog(){
+private void categoryDialog() {
     AlertDialog.Builder b = new AlertDialog.Builder(this);
     b.setTitle("Category")
             .setItems(Constants.causeCategories, new DialogInterface.OnClickListener() {
@@ -139,94 +142,194 @@ private void categoryDialog(){
                 }
             })
             .show();
-}
 
-    public void addCauseListing() {
+    btnIndividual.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent bus = new Intent(Register_Cause.this, SignUp.class);
+            startActivity(bus);
+        }
+    });
+    btnBusiness.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(Register_Cause.this, "You are already on Business Reg Page", Toast.LENGTH_SHORT).show();
+        }
+    });
+
+    add_logo.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showImagePickDialog();
+        }
+    });
+    btnSub.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Register();
+        }
+    });
+}
+    private String documentId;
+    private String causeId, description, category, phone, causeLogo;
+    private int postcode, acnc;
+
+    public void Register() {
+        progressDialog.setMessage("PLease Wait...");
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
 
         final String timestamp = "" + System.currentTimeMillis();
-        String filePath = "Cause_Logos/" + timestamp;
+        final String uid = firebaseAuth.getUid();
+        causeId = uid;
+        userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
 
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
-        storageRef.putFile(image_uri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        if (image_uri == null) {
+            documentId = userId;
+            //Temp Hard Coded:
+            category = "CAUSE CAT";
+            description = "This is a test Cause Registration without an image";
+            postcode = 3174;
+            phone = "0418792366";
+            acnc = 2222;
+            causeLogo = "";
 
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful()) ;
-                        Uri downloadImageUri = uriTask.getResult();
-                        userId = firebaseAuth.getCurrentUser().getUid();
-                        if (uriTask.isSuccessful()) {
-                            final String causeId = userId + "" + timestamp;
-                            final String category = tvCategory.getText().toString().trim();
-                            final String description = etDescription.getText().toString().trim();
-                            final int postcode = Integer.parseInt(etPostcode.getText().toString().trim());
-                            final String phone = etPhone.getText().toString().trim();
-                            final int acnc = Integer.parseInt(etACNC.getText().toString().trim());
+            /*
+            category = tvCategory.getText().toString().trim();
+            description = etDescription.getText().toString().trim();
+            postcode = Integer.parseInt(etPostcode.getText().toString().trim());
+            phone = etPhone.getText().toString().trim();
+            acnc = Integer.parseInt(etACNC.getText().toString().trim());
+             causeLogo  ="";
+            */
+            final UserC userc = new UserC(causeId, description, category, postcode, phone, acnc, causeLogo);
 
-
-                            final String causeLogo  = downloadImageUri.toString();  //will need to cater for no image but works for now
-
-                            final String timestamp = "" + System.currentTimeMillis();
-                            final String uid = firebaseAuth.getUid();
-
-                            final UserC userc = new UserC(causeId, description, category, postcode, phone, acnc, causeLogo);
-
-                            if (TextUtils.isEmpty(category)) {
-                                tvCategory.setError("Category required");
-                                tvCategory.requestFocus();
-                                return;
-                            } else if (TextUtils.isEmpty(description)) {
-                                etDescription.setError("Description of Cause is required");
-                                etDescription.requestFocus();
-                                return;
-                            } else if (postcode == 0) {
-                                etPostcode.setError("Postcode required");
-                                etPostcode.requestFocus();
-                                return;
-                            }else if (TextUtils.isEmpty(phone)) {
-                                etPhone.setError("Phone no required");
-                                etPhone.requestFocus();
-                                return;
-                            } else if (acnc == 0) {
-                                etACNC.setError("ACNC no must be valid");
-                                etACNC.requestFocus();
-                                return;
-                            }
-
-
-                            progressDialog.setMessage("ACNC is being Verified...");
-                            progressDialog.show();
-
-
-                            ListedCauseRef.add(userc)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(Register_Cause.this, "Cause Registered was Successful", Toast.LENGTH_SHORT).show();
-                                            clearData();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+            if (TextUtils.isEmpty(category)) {
+                tvCategory.setError("Category required");
+                tvCategory.requestFocus();
+                return;
+            } else if (TextUtils.isEmpty(description)) {
+                etDescription.setError("Description of Cause is required");
+                etDescription.requestFocus();
+                return;
+            } else if (postcode == 0) {
+                etPostcode.setError("Postcode required");
+                etPostcode.requestFocus();
+                return;
+            } else if (TextUtils.isEmpty(phone)) {
+                etPhone.setError("Phone no required");
+                etPhone.requestFocus();
+                return;
+            } else if (acnc == 0) {
+                etACNC.setError("ACNC no must be valid");
+                etACNC.requestFocus();
+                return;
+            }
+            //Firestore:
+            CauseUserRef.add(userc)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            progressDialog.dismiss();
+                            Toast.makeText(Register_Cause.this, "Cause has been Registered", Toast.LENGTH_SHORT).show();
+                            clearData();
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            String filePath = "Cause_Logos/" + uid + timestamp;
 
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
+            storageRef.putFile(image_uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!uriTask.isSuccessful()) ;
+                            Uri downloadImageUri = uriTask.getResult();
+
+                            if (uriTask.isSuccessful()) {
+                                documentId = userId;
+                                //Temp Hard Coded:
+                                category = "GARDENING";
+                                description = "This is a test Cause Registration for Gardening plus image";
+                                postcode = 3102;
+                                phone = "0398595665";
+                                acnc = 8888;
+                                causeLogo = downloadImageUri.toString();
+
+                            /*
+                            category = tvCategory.getText().toString().trim();
+                            description = etDescription.getText().toString().trim();
+                            postcode = Integer.parseInt(etPostcode.getText().toString().trim());
+                            phone = etPhone.getText().toString().trim();
+                            acnc = Integer.parseInt(etACNC.getText().toString().trim());
+                              causeLogo  = downloadImageUri.toString();
+                            */
+                                final UserC userc = new UserC(causeId, description, category, postcode, phone, acnc, causeLogo);
+
+                                if (TextUtils.isEmpty(category)) {
+                                    tvCategory.setError("Category required");
+                                    tvCategory.requestFocus();
+                                    return;
+                                } else if (TextUtils.isEmpty(description)) {
+                                    etDescription.setError("Description of Cause is required");
+                                    etDescription.requestFocus();
+                                    return;
+                                } else if (postcode == 0) {
+                                    etPostcode.setError("Postcode required");
+                                    etPostcode.requestFocus();
+                                    return;
+                                } else if (TextUtils.isEmpty(phone)) {
+                                    etPhone.setError("Phone no required");
+                                    etPhone.requestFocus();
+                                    return;
+                                } else if (acnc == 0) {
+                                    etACNC.setError("ACNC no must be valid");
+                                    etACNC.requestFocus();
+                                    return;
+                                }
+
+
+                                progressDialog.setMessage("ACNC is being Verified...");
+                                progressDialog.show();
+
+
+                                CauseUserRef.add(userc)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(Register_Cause.this, "Cause Registered was Successful", Toast.LENGTH_SHORT).show();
+                                                clearData();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
     private void clearData () {
         tvCategory.setText("");
         etDescription.setText("");
