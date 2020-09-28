@@ -47,7 +47,7 @@ public class SignUp extends AppCompatActivity {
     private static final String TAG = "SignUp";
 
     private EditText etEmail, etName1, etName2, etPass, etConPass;
-    private ImageView ivProfilePic, ivLogo;
+    private ImageView ivProfilePic;
     Button btnSignUp, btnInd, btnBus;
     TextView tvLogin;
 
@@ -86,8 +86,6 @@ public class SignUp extends AppCompatActivity {
         btnInd = findViewById(R.id.btnInd);
         btnBus = findViewById(R.id.btnBus);
         ivProfilePic = findViewById(R.id.ivProfilePic);
-        ivLogo = findViewById(R.id.ivLogo);
-
 
         firebaseAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();

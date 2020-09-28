@@ -278,7 +278,7 @@
         <Button
             android:id="@+id/btnSub"
             android:layout_width="131dp"
-            android:layout_height="24dp"
+            android:layout_height="17dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:background="@drawable/btn_login"

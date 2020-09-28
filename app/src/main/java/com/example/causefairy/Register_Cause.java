@@ -141,6 +141,104 @@ private void categoryDialog(){
             .show();
 }
 
+    public void addCauseListing() {
+
+        final String timestamp = "" + System.currentTimeMillis();
+        String filePath = "Cause_Logos/" + timestamp;
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
+        storageRef.putFile(image_uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful()) ;
+                        Uri downloadImageUri = uriTask.getResult();
+                        userId = firebaseAuth.getCurrentUser().getUid();
+                        if (uriTask.isSuccessful()) {
+                            final String causeId = userId + "" + timestamp;
+                            final String category = tvCategory.getText().toString().trim();
+                            final String description = etDescription.getText().toString().trim();
+                            final int postcode = Integer.parseInt(etPostcode.getText().toString().trim());
+                            final String phone = etPhone.getText().toString().trim();
+                            final int acnc = Integer.parseInt(etACNC.getText().toString().trim());
+
+
+                            final String causeLogo  = downloadImageUri.toString();  //will need to cater for no image but works for now
+
+                            final String timestamp = "" + System.currentTimeMillis();
+                            final String uid = firebaseAuth.getUid();
+
+                            final UserC userc = new UserC(causeId, description, category, postcode, phone, acnc, causeLogo);
+
+                            if (TextUtils.isEmpty(category)) {
+                                tvCategory.setError("Category required");
+                                tvCategory.requestFocus();
+                                return;
+                            } else if (TextUtils.isEmpty(description)) {
+                                etDescription.setError("Description of Cause is required");
+                                etDescription.requestFocus();
+                                return;
+                            } else if (postcode == 0) {
+                                etPostcode.setError("Postcode required");
+                                etPostcode.requestFocus();
+                                return;
+                            }else if (TextUtils.isEmpty(phone)) {
+                                etPhone.setError("Phone no required");
+                                etPhone.requestFocus();
+                                return;
+                            } else if (acnc == 0) {
+                                etACNC.setError("ACNC no must be valid");
+                                etACNC.requestFocus();
+                                return;
+                            }
+
+
+                            progressDialog.setMessage("ACNC is being Verified...");
+                            progressDialog.show();
+
+
+                            ListedCauseRef.add(userc)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(Register_Cause.this, "Cause Registered was Successful", Toast.LENGTH_SHORT).show();
+                                            clearData();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void clearData () {
+        tvCategory.setText("");
+        etDescription.setText("");
+        etPostcode.setText("");
+        etPhone.setText("");
+        etACNC.setText("");
+
+        add_logo.setImageResource(R.drawable.add_image);// needs fixing but i have no idea re drawable stuff??
+
+        image_uri = null;
+    }
+////CAMERA STUFF:
     private void showImagePickDialog(){
         String[] options = {"Camera", "Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -246,103 +344,4 @@ private void categoryDialog(){
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    public void addCauseListing() {
-
-        final String timestamp = "" + System.currentTimeMillis();
-        String filePath = "Cause_Logos/" + timestamp;
-
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
-        storageRef.putFile(image_uri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful()) ;
-                        Uri downloadImageUri = uriTask.getResult();
-                        userId = firebaseAuth.getCurrentUser().getUid();
-                        if (uriTask.isSuccessful()) {
-                            final String causeId = userId + "" + timestamp;
-                            final String category = tvCategory.getText().toString().trim();
-                            final String description = etDescription.getText().toString().trim();
-                            final int postcode = Integer.parseInt(etPostcode.getText().toString().trim());
-                            final String phone = etPhone.getText().toString().trim();
-                            final int acnc = Integer.parseInt(etACNC.getText().toString().trim());
-
-
-                            final String causeLogo  = downloadImageUri.toString();  //will need to cater for no image but works for now
-
-                            final String timestamp = "" + System.currentTimeMillis();
-                            final String uid = firebaseAuth.getUid();
-
-                            final UserC userc = new UserC(causeId, description, category, postcode, phone, acnc, causeLogo);
-
-                            if (TextUtils.isEmpty(category)) {
-                                tvCategory.setError("Category required");
-                                tvCategory.requestFocus();
-                                return;
-                            } else if (TextUtils.isEmpty(description)) {
-                                etDescription.setError("Description of Cause is required");
-                                etDescription.requestFocus();
-                                return;
-                            } else if (postcode == 0) {
-                                etPostcode.setError("Postcode required");
-                                etPostcode.requestFocus();
-                                return;
-                            }else if (TextUtils.isEmpty(phone)) {
-                                etPhone.setError("Phone no required");
-                                etPhone.requestFocus();
-                                return;
-                            } else if (acnc == 0) {
-                                etACNC.setError("ACNC no must be valid");
-                                etACNC.requestFocus();
-                                return;
-                            }
-
-
-                            progressDialog.setMessage("ACNC is being Verified...");
-                            progressDialog.show();
-
-
-                            ListedCauseRef.add(userc)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(Register_Cause.this, "Cause Registered was Successful", Toast.LENGTH_SHORT).show();
-                                            clearData();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void clearData () {
-        tvCategory.setText("");
-        etDescription.setText("");
-        etPostcode.setText("");
-        etPhone.setText("");
-        etACNC.setText("");
-
-        add_logo.setImageResource(R.drawable.add_image);// needs fixing but i have no idea re drawable stuff??
-
-        image_uri = null;
-    }
-
 }

@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -50,7 +51,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class Register_Business extends AppCompatActivity implements LocationListener {
-   // private static final String TAG = "SignUp";
     private static final String TAG = "Register_Business";
 
     TextView tvlog;
@@ -58,10 +58,11 @@ public class Register_Business extends AppCompatActivity implements LocationList
     EditText etBusNam, etAbn, etBusEmail, etPassword, etConPassword, etAddResult;
     ImageView add_logo;
 
-
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private CollectionReference BusinessUserRef = db.collection("UsersB");
     private String userId;
 
     private static final int LOCATION_REQUEST_CODE = 100;
@@ -112,14 +113,6 @@ public class Register_Business extends AppCompatActivity implements LocationList
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-
-        add_logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showImagePickDialog();
-            }
-        });
-
         btnIndividual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,26 +120,29 @@ public class Register_Business extends AppCompatActivity implements LocationList
                 startActivity(bus);
             }
         });
-
-        tvlog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showImagePickDialog();
-            }
-        });
-
         btnBusiness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(Register_Business.this, "You are already on Business Reg Page", Toast.LENGTH_SHORT).show();
             }
         });
-
-
+        tvlog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bus = new Intent(Register_Business.this, Register_Cause.class);
+                startActivity(bus);
+            }
+        });
+        add_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImagePickDialog();
+            }
+        });
         btnSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Register();
+                RegisterBwithImage();
             }
         });
         btnGps.setOnClickListener(new View.OnClickListener() {
@@ -160,36 +156,17 @@ public class Register_Business extends AppCompatActivity implements LocationList
             }
         });
     }
-    private String busName, busEmail, abn, pass, ConPass;
-    private void Register() {
-        busName = etBusNam.getText().toString();
-        abn = etAbn.getText().toString();
-        busEmail = etBusEmail.getText().toString();
-        pass = etPassword.getText().toString();
-        ConPass = etConPassword.getText().toString();
+    private String documentId,name1, name2, email, password, conpass, profilePic, timestamp, uid;
+    private String businessId, busName, busEmail, pass, conPass, busLogo;
+    private int abn;
 
-        if (busName.equals("")) {
-            etBusNam.setError("Business Name is Required");
-        } else if (abn.equals("")) {
-            etAbn.setError("ABN No is Required");
-        } else if (busEmail.equals("")) {
-            etBusEmail.setError("Email is Required");
-        } else if ((!busEmail.contains("@"))) { //|| (!busEmail.contains(".au"))) {
-            etBusEmail.setError("Please Enter a valid Email Address.For example coburg@officeworks.com.au");
-        } else if (pass.equals("")) {
-            etPassword.setError("Password is Required");
-        } else if (ConPass.equals("")) {
-            etConPassword.setError("Confirm Password is Required");
-        } else if (!ConPass.equals(pass)) {
-            etConPassword.setError("Passwords do not match");
-        }
-        addBusinessUser();
-    }
-    private void addBusinessUser(){
+    private void RegisterBwithImage(){
         progressDialog.setMessage("PLease Wait...");
         progressDialog.show();
        // progressDialog.setCanceledOnTouchOutside(false);
         final String timestamp = "" + System.currentTimeMillis();
+        final String uid = firebaseAuth.getUid();
+        businessId = uid;
 
 
 
@@ -197,17 +174,42 @@ public class Register_Business extends AppCompatActivity implements LocationList
                 userId = firebaseAuth.getCurrentUser().getUid();
 
                     if (image_uri == null) {
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("userBId", "" + timestamp);
-                        hashMap.put("BusinessName ", "" + busName);
-                        hashMap.put("ABN ", "" + abn);
-                        hashMap.put("Email", "" + busEmail);
-                        hashMap.put("productIcon", ""); //no image
-                        hashMap.put("timestamp", "" + timestamp);
-                        hashMap.put("uid", "" + firebaseAuth.getUid());
+                        documentId = userId;
+                        /*busName = etBusNam.getText().toString();
+                        abn = Integer.parseInt(etAbn.getText().toString().trim());
+                        busEmail = etBusEmail.getText().toString();
+                        pass = etPassword.getText().toString();
+                        conPass = etConPassword.getText().toString();
+                        busLogo = "";
+*/
+                        //Temp Hard Coded:
+                        busName = "CADBURY CHOCOLATE LTD";
+                        abn = 36363636;
+                        busEmail = ""+timestamp+ "cadburyChocolate@yahoo.com";
+                        pass = "111111";
+                        conPass = "111111";
+                        busLogo = "";
+
+                        UserB userb= new UserB(documentId,name1, name2, email, password, conpass, profilePic, timestamp, uid, businessId, busName, abn, busEmail, pass, conPass, busLogo);
+
+                        if (busName.equals("")) {
+                            etBusNam.setError("Business Name is Required");
+                        } else if (abn==0) {
+                            etAbn.setError("ABN No is Required");
+                        } else if (busEmail.equals("")) {
+                            etBusEmail.setError("Email is Required");
+                        } else if ((!busEmail.contains("@"))) { //|| (!busEmail.contains(".au"))) {
+                            etBusEmail.setError("Please Enter a valid Email Address.For example coburg@officeworks.com.au");
+                        } else if (pass.equals("")) {
+                            etPassword.setError("Password is Required");
+                        } else if (conPass.equals("")) {
+                            etConPassword.setError("Confirm Password is Required");
+                        } else if (!conPass.equals(pass)) {
+                            etConPassword.setError("Passwords do not match");
+                        }
 
                         //Firestore:
-                        db.collection("UsersB").add(hashMap)
+                       BusinessUserRef.add(userb)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
@@ -237,17 +239,42 @@ public class Register_Business extends AppCompatActivity implements LocationList
                                         Uri downloadImageUri = uriTask.getResult();
 
                                         if (uriTask.isSuccessful()) {
-                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                            hashMap.put("userBId", "" + timestamp);
-                                            hashMap.put("BusinessName ", "" + busName);
-                                            hashMap.put("ABN ", "" + abn);
-                                            hashMap.put("Email", "" + busEmail);
-                                            hashMap.put("productIcon", "" + downloadImageUri); //image
-                                            hashMap.put("timestamp", "" + timestamp);
-                                            hashMap.put("uid", "" + firebaseAuth.getUid());
+                                            documentId = userId;
+                                            /*busName = etBusNam.getText().toString();
+                                            abn = Integer.parseInt(etAbn.getText().toString().trim());
+                                            busEmail = etBusEmail.getText().toString();
+                                            pass = etPassword.getText().toString();
+                                            conPass = etConPassword.getText().toString();
+                                            busLogo = "" + downloadImageUri;
+                    */
+                                            //Temp Hard Coded:
+                                            busName = "CADBURY CHOCOLATE LTD";
+                                            abn = 36363636;
+                                            busEmail = ""+timestamp+ "cadburyChocolate@yahoo.com";
+                                            pass = "111111";
+                                            conPass = "111111";
+                                            busLogo = "" + downloadImageUri;
+
+                                            UserB userb= new UserB(documentId,name1, name2, email, password, conpass, profilePic, timestamp, uid, businessId, busName, abn, busEmail, pass, conPass, busLogo);
+
+                                            if (busName.equals("")) {
+                                                etBusNam.setError("Business Name is Required");
+                                            } else if (abn==0) {
+                                                etAbn.setError("ABN No is Required");
+                                            } else if (busEmail.equals("")) {
+                                                etBusEmail.setError("Email is Required");
+                                            } else if ((!busEmail.contains("@"))) { //|| (!busEmail.contains(".au"))) {
+                                                etBusEmail.setError("Please Enter a valid Email Address.For example coburg@officeworks.com.au");
+                                            } else if (pass.equals("")) {
+                                                etPassword.setError("Password is Required");
+                                            } else if (conPass.equals("")) {
+                                                etConPassword.setError("Confirm Password is Required");
+                                            } else if (!conPass.equals(pass)) {
+                                                etConPassword.setError("Passwords do not match");
+                                            }
 
                                             //FIRESTORE:
-                                            db.collection("UsersB").add(hashMap)
+                                            BusinessUserRef.add(userb)
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                         @Override
                                                         public void onSuccess(DocumentReference documentReference) {
