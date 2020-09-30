@@ -1,4 +1,4 @@
-package com.example.causefairy;
+package com.example.causefairy.models;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;

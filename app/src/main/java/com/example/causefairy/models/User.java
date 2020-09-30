@@ -1,4 +1,4 @@
-package com.example.causefairy;
+package com.example.causefairy.models;
 
 
 import com.google.firebase.database.Exclude;
@@ -13,7 +13,7 @@ public class User {
     private String conpass;
     private String profilePic;
     private String timestamp;
-    private String uid;
+    private static String uid;
 
     public User(){}
 
@@ -67,7 +67,7 @@ public class User {
     }
 
 
-    public String getUid() {
+    public static String getUid() {
         return uid;
     }
 

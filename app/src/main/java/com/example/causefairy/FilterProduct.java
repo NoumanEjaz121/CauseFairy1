@@ -1,6 +1,9 @@
 package com.example.causefairy;
 
 import android.widget.Filter;
+
+import com.example.causefairy.models.Product;
+
 import java.util.ArrayList;
 
 public class FilterProduct extends Filter {
@@ -41,7 +44,7 @@ public class FilterProduct extends Filter {
 
     @Override
     protected void publishResults(CharSequence contraint, FilterResults results){
-        adapter.productList = (ArrayList<Product>) results.values;
+    //    adapter.productList = (ArrayList<Product>) results.values;
         adapter.notifyDataSetChanged();
     }
 }

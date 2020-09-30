@@ -13,12 +13,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,25 +25,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.causefairy.models.UserC;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.HashMap;
 import java.util.Objects;
-
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static com.example.causefairy.R.id.ivProductIcon;
 
 
 public class Register_Cause extends AppCompatActivity {
@@ -181,7 +172,7 @@ private void categoryDialog() {
             //Temp Hard Coded:
             category = "CAUSE CAT";
             description = "This is a test Cause Registration without an image";
-            postcode = 3174;
+            postcode = 3000;
             phone = "0418792366";
             acnc = 2222;
             causeLogo = "";

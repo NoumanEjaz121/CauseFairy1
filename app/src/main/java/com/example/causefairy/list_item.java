@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.causefairy.models.Product;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -44,7 +45,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static com.example.causefairy.R.id.ivProductIcon;
+//import static com.example.causefairy.R.id.ivProductIcon;
 import static com.example.causefairy.R.id.spinner;
 //import static com.example.causefairy.R.id.spinner1;
 

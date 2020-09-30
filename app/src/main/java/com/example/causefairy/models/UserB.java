@@ -1,9 +1,9 @@
-package com.example.causefairy;
+package com.example.causefairy.models;
 
 
 import com.google.firebase.database.Exclude;
 
-public class UserB extends User{
+public class UserB extends User {
 
     private String businessId;
     private String businessName;

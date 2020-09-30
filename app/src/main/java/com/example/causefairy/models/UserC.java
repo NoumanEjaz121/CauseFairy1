@@ -1,12 +1,12 @@
-package com.example.causefairy;
+package com.example.causefairy.models;
 
 import com.google.firebase.database.Exclude;
 
-public class UserC extends UserB{
+public class UserC extends UserB {
 
     private String causeId;
     private String description;
-    private String catergory;
+    private String category;
     private int postcode;
     private String phone;
     private int acnc;
@@ -19,7 +19,7 @@ public class UserC extends UserB{
     public UserC(String causeId, String description, String category, int postcode, String phone, int acnc, String causeLogo) {
         this.causeId = causeId;
         this.description = description;
-        this.catergory = catergory;
+        this.category = category;
         this.postcode = postcode;
         this.phone = phone;
         this.acnc = acnc;
@@ -39,7 +39,7 @@ public class UserC extends UserB{
         super(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid, businessId, businessName, abn, email1, password1, conpass1, busLogo);
         this.causeId = causeId;
         this.description = description;
-        this.catergory = catergory;
+        this.category = category;
         this.postcode = postcode;
         this.phone = phone;
         this.acnc = acnc;
@@ -50,8 +50,8 @@ public class UserC extends UserB{
         return description;
     }
 
-    public String getCatergory() {
-        return catergory;
+    public String getCategory() {
+        return category;
     }
 
     public int getPostcode() {

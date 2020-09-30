@@ -37,7 +37,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/etSearchProducts"
+                android:id="@+id/etSearchCauses"
                 android:layout_width="301dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -128,7 +128,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/prodctsRL1"
+            android:id="@+id/causesRL1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
@@ -136,7 +136,7 @@
 
 
             <TextView
-                android:id="@+id/tvFilteredProducts"
+                android:id="@+id/tvFilteredCauses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Showing All"
@@ -147,10 +147,10 @@
                 android:layout_marginBottom="5dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvProducts"
+                android:id="@+id/rvCauses"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/tvFilteredProducts"
+                android:layout_below="@+id/tvFilteredCauses"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/row_cause_card"/>
 

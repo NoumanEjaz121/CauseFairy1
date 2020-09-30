@@ -7,32 +7,35 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.causefairy.models.UserC;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 
+
 public class AdapterCauses extends RecyclerView.Adapter<AdapterCauses.HolderCauses> implements Filterable {
 
     private  Context context;
-    public ArrayList<Product> productList, filterList;
+    public ArrayList<UserC> causeList, filterCauseList;
     private FilterProduct filter;
 
-    public AdapterCauses(Context context, ArrayList<Product> productList) {
+    public AdapterCauses(Context context, ArrayList<UserC> causeList) {
         this.context = context;
-        this.productList = productList;
-        this.filterList = productList;
+        this.causeList = causeList;
+        this.filterCauseList = causeList;
     }
 
     @Override
     public Filter getFilter() {
         if(filter == null){
-            filter = new FilterProduct(this, filterList );
+        //    filter = new FilterCause(this, filterCauseList);
         }
         return filter;
     }
@@ -45,30 +48,40 @@ public class AdapterCauses extends RecyclerView.Adapter<AdapterCauses.HolderCaus
     }
 
      public void onBindViewHolder(@NonNull HolderCauses holder, int position) {
-        Product product = productList.get(position);
+        UserC userc = causeList.get(position);
 
-        String id = product.getDocumentId();
-        String title = product.getProductName();
-        String category = product.getCategory();
-        String desc = product.getDescription();
-        String qty = String.valueOf(product.getQty()); //maybe?
-        String price = String.valueOf(product.getUnitPrice()); //?
-        String icon = product.getProductIcon();
-        String timestamp = product.getTimestamp();
-        String uid = product.getUid();
+        //get data
+        String id = userc.getCauseId();
+        String title = userc.getBusinessName(); //??
+        String category = userc.getCategory();
+        String desc = userc.getDescription();
+        String postcode = String.valueOf(userc.getPostcode());
+        String phone = userc.getPhone();
+        String acnc = String.valueOf(userc.getAcnc());
+        String icon = userc.getCauseLogo();
+       // String timestamp = userc.getTimestamp();
+        String uid = userc.getUid();
 
-        holder.tvProductName.setText(title);
-        holder.tvUnitPrice.setText("$" +price);
-        holder.tvQty.setText(qty);
-        holder.tv1.setText(desc+"$$");
-        holder.tv2.setText(" +++++ ");
-
+        //set card data
+        holder.tvCategory.setText(category);
+      //  holder.tvCauseName.setText(UserB.getUid().getBusName());
+        holder.tvDescription.setText(desc);
+        holder.tv1.setText(phone);
+        if(postcode.substring(1).charAt(0)==3){
+            holder.tv2.setText(" VIC ");
+         }else if(postcode.substring(1).charAt(0)==2){
+             holder.tv2.setText("NSW");
+         }else {
+          //  holder.tv2.setVisibility(View.VISIBLE);
+            holder.tv2.setText("****");
+        }
+        holder.tvPostcode.setText(postcode);
 
         try{
-            Picasso.get().load(icon).placeholder(R.drawable.add_image).into(holder.ivProductIcon);
+            Picasso.get().load(icon).placeholder(R.drawable.my_logo2).into(holder.ivLogo);
         }
         catch (Exception e){
-            holder.ivProductIcon.setImageResource(R.drawable.add_image);
+            holder.ivLogo.setImageResource(R.drawable.my_logo2);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,29 +89,32 @@ public class AdapterCauses extends RecyclerView.Adapter<AdapterCauses.HolderCaus
 
             }
         });
+
+
     }
 
     @Override
     public int getItemCount() {
-      //  if(productList != null) {
-            return productList.size();
-    //    }
-    //    return 0;
+        return causeList.size(); //no of records
     }
 
     class HolderCauses extends RecyclerView.ViewHolder {
-        private ImageView ivProductIcon, ivNext;
-        private TextView tvProductName, tvQty, tv1, tv2, tvUnitPrice;
+        private ImageView ivLogo, ivNext;
+        private TextView tvCategory, tvCauseName, tv1, tv2, tvDescription, tvPostcode, tvBusName;
+        private RatingBar rbStars;
 
         public HolderCauses(@NonNull View itemView){
             super(itemView);
 
-            ivProductIcon = itemView.findViewById(R.id.ivProductIcon);
-            tvProductName = itemView.findViewById(R.id.tvProductName);
-            tvQty = itemView.findViewById(R.id.tvQty);
+            ivLogo = itemView.findViewById(R.id.ivLogo);
+            tvCauseName = itemView.findViewById(R.id.tvCauseName);
+            tvCategory= itemView.findViewById(R.id.tvCategory);
             tv1 = itemView.findViewById(R.id.tv1);
             tv2 = itemView.findViewById(R.id.tv2);
-            tvUnitPrice = itemView.findViewById(R.id.tvUnitPrice);
+            tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvPostcode = itemView.findViewById(R.id.tvPostcode);
+            rbStars = itemView.findViewById(R.id.rbStars);
+
         }
 
     }
