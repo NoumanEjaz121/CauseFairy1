@@ -30,8 +30,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50px"
         android:layout_gravity="left"
+        android:layout_marginLeft="50px"
         android:orientation="horizontal">
 
         <TextView
@@ -55,6 +55,7 @@
 
     </LinearLayout>
 
+
     <TextView
         android:id="@+id/contact_intro"
         android:layout_width="wrap_content"
@@ -68,192 +69,136 @@
         android:text="Questions? Comments? We’d love to hear from you!"
         android:textColor="#2E516A" />
 
-    <TextView
-        android:id="@+id/contact_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="20px"
-        android:layout_marginRight="50px"
-        android:foregroundGravity="left"
-        android:gravity="left"
-        android:text="Name:"
-        android:textColor="#2E516A"
-        android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/contact_en_name"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/contact_layout_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
         android:layout_marginLeft="50px"
-        android:layout_marginTop="10px"
         android:layout_marginRight="50px"
-        android:background="@drawable/btn_login"
-        android:inputType="textPersonName"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:textColor="@color/black"
-        android:textSize="14dp" />
+        android:hint="@string/name_mandatory_placeholder"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/baseline_person_24">
 
-    <TextView
-        android:id="@+id/contact_Company"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="10px"
-        android:layout_marginRight="50px"
-        android:foregroundGravity="left"
-        android:gravity="left"
-        android:text="Company:"
-        android:textColor="#2E516A"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/contact_en_company"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="10px"
-        android:layout_marginRight="50px"
-        android:background="@drawable/btn_login"
-        android:inputType="textPersonName"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:textColor="@color/black"
-        android:textSize="14dp" />
-
-    <TextView
-        android:id="@+id/contact_phone_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="10px"
-        android:layout_marginRight="50px"
-        android:foregroundGravity="left"
-        android:gravity="left"
-        android:text="Phone Number:"
-        android:textColor="#2E516A"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/contact_en_phone_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="10px"
-        android:layout_marginRight="50px"
-        android:background="@drawable/btn_login"
-        android:inputType="phone"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:textColor="@color/black"
-        android:textSize="14dp" />
-
-    <TextView
-        android:id="@+id/contact_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="10px"
-        android:layout_marginRight="50px"
-        android:foregroundGravity="left"
-        android:gravity="left"
-        android:text="E-mail:"
-        android:textColor="#2E516A"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/contact_en_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="10px"
-        android:layout_marginRight="50px"
-        android:background="@drawable/btn_login"
-        android:inputType="textEmailAddress"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:textColor="@color/black"
-        android:textSize="14dp" />
-
-    <TextView
-        android:id="@+id/contact_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="10px"
-        android:layout_marginRight="50px"
-        android:foregroundGravity="left"
-        android:gravity="left"
-        android:text="Message:"
-        android:textColor="#2E516A"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/contact_en_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="10px"
-        android:layout_marginRight="50px"
-        android:inputType="textMultiLine"
-        android:minLines="3"
-        android:gravity="top"
-        android:background="@drawable/btn_login"
-        android:textColor="@color/black"
-        android:textSize="14dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100px"
-        android:layout_marginTop="20px"
-        android:layout_marginRight="50px"
-        android:gravity="right"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/contact_en_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100px"
-            android:layout_marginRight="40px"
-            android:minHeight="30dp"
-            android:background="@drawable/btn_login"
-            android:text="Submit"
-            android:textAllCaps="false"
-            android:textColor="#02A7F0"
-            android:textStyle="bold" />
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="10px"
+        android:layout_marginRight="50px"
+        android:hint="Company"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/baseline_add_business_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/contact_en_company"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="50px"
-            android:background="@drawable/btn_login"
-            android:text="Cancel"
-            android:minHeight="30dp"
-            android:textAllCaps="false"
-            android:textColor="#02A7F0"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="10px"
+        android:layout_marginRight="50px"
+        android:hint="Phone Number"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/baseline_phone_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/contact_en_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/contact_layout_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="10px"
+        android:layout_marginRight="50px"
+        android:hint="@string/email_placeholder"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/baseline_alternate_email_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/contact_en_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/contact_layout_message"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="10px"
+        android:layout_marginRight="50px"
+        android:hint="@string/message_mandatory_placeholder"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:startIconContentDescription="Testing"
+        app:startIconDrawable="@drawable/baseline_message_black_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/contact_en_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/submit_button"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/colorPrimary" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100px"
-        android:layout_marginLeft="50px"
         android:layout_gravity="left"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="70px"
         android:orientation="horizontal">
 
         <TextView
@@ -276,35 +221,36 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/add_info"
-        android:layout_marginTop="20px"
-        android:layout_marginLeft="50px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="20px"
         android:text="Address : DieSachbearbeiter Choriner Strabe 49 10435, Berlin"
         android:textColor="@color/black"
-        android:textSize="10sp"/>
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/email_info"
-        android:layout_marginTop="10px"
-        android:layout_marginLeft="50px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="10px"
         android:text="Email : causefairy@gmail.com"
         android:textColor="@color/black"
-        android:textSize="10sp"/>
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/num_info"
-        android:layout_marginTop="10px"
-        android:layout_marginLeft="50px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="10px"
         android:text="Phone : +1 25698 125 901"
         android:textColor="@color/black"
-        android:textSize="10sp"/>
+        android:textSize="10sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

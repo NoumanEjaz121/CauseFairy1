@@ -1,34 +1,31 @@
 package com.example.causefairy;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import android.Manifest;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.TextUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.util.Linkify;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.causefairy.models.UserC;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,17 +35,22 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 
-public class Register_Cause extends AppCompatActivity {
+public class Register_Cause extends Fragment {
+    // TextView
+    TextView terms, login;
 
-    private ImageView ivLogo;
+    // TextInput Layout
+    TextInputLayout categoryLayout, abnNumberLayout, phoneLayout, descLayout, postCodeLayout ;
+    TextInputEditText category_et, abnNumber_et, phone_et, desc_et, postCode_et;
+    String category, abnNumber, phone, desc, postCode;
 
-    private TextView tvCategory, tvlog;
-    private EditText etDescription, etPostcode, etPhone, etACNC;
-    private ImageView add_logo;
-    private Button btnSub;
+    // Buttons
+    Button submit;
 
+    // Firebase
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -65,165 +67,157 @@ public class Register_Cause extends AppCompatActivity {
     private String[] cameraPermissions;
     private String[] storagePermissions;
 
+    // ImageView
+    private ImageView add_logo;
     private Uri image_uri;
+    String documentId, causeLogo = "";
 
     StorageReference storageReference;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register__cause);
 
-        ivLogo = findViewById(R.id.ivLogo);//backBtn
-        tvCategory = findViewById(R.id.tvCategory);
-        tvlog = findViewById(R.id.tvlog);
-        add_logo = findViewById(R.id.add_logo);
-        etDescription = findViewById(R.id.etDescription);
-        btnSub = findViewById(R.id.btnSub);
-        etPostcode = findViewById(R.id.etPostcode);
-        etPhone = findViewById(R.id.etPhone);
-        etACNC = findViewById(R.id.etACNC);
+    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState){
+        View view = inflater.inflate(R.layout.fragment_cause, viewGroup, false);
 
+        // Firebase Initialization
         firebaseAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
         db = FirebaseFirestore.getInstance();
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle("Please Wait!");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        //hidden back button
-        ivLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        tvlog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent bus = new Intent(Register_Cause.this, MainActivity.class);
-                startActivity(bus);
-            }
-        });
-        add_logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showImagePickDialog();
-            }
-        });
-        tvCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                causeDialog();
-            }
-        });
-        btnSub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Register();
-            }
-        });
-}
-    private void causeDialog(){
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("Cause")
-                .setItems(Constants.causes1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String c = Constants.causes1[which];
+        // Image view
+        add_logo = view.findViewById(R.id.add_logo);
 
-                        tvCategory.setText(c);
-                    }
-                })
-                .show();
+        // Layout Initialization
+        categoryLayout = (TextInputLayout)view.findViewById(R.id.cause_layout_category);
+        abnNumberLayout = (TextInputLayout)view.findViewById(R.id.cause_layout_abn);
+        phoneLayout = (TextInputLayout)view.findViewById(R.id.cause_layout_phone);
+        descLayout = (TextInputLayout)view.findViewById(R.id.cause_layout_desc);
+        postCodeLayout = (TextInputLayout)view.findViewById(R.id.cause_layout_postcode);
+
+        // EditText Initialization
+        category_et = (TextInputEditText) view.findViewById(R.id.cause_en_category);
+        abnNumber_et = (TextInputEditText) view.findViewById(R.id.cause_en_abn);
+        phone_et = (TextInputEditText) view.findViewById(R.id.cause_en_phone);
+        desc_et = (TextInputEditText) view.findViewById(R.id.cause_en_desc);
+        postCode_et = (TextInputEditText) view.findViewById(R.id.cause_en_postcode);
 
 
-    add_logo.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            showImagePickDialog();
-        }
-    }); //??
-    btnSub.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Register();
-        }
-    }); //??
-}
-    private String documentId;
-    private String causeId, description, category, phone, causeLogo;
-    private int postcode, acnc;
+        // Linker
+        Pattern policyMatcher = Pattern.compile("Privacy Policy");
+        Pattern conditionMatcher = Pattern.compile("Conditions of Use");
 
-    public void Register() {
+        terms = view.findViewById(R.id.business_terms);
+        String termsURL = "terms_linking://";
+        String policyURL = "policy_linking://";
+
+        Linkify.addLinks(terms, conditionMatcher, termsURL);
+        Linkify.addLinks(terms, policyMatcher, policyURL);
+
+        // Button submission
+        submit = view.findViewById(R.id.cause_btnSignUp);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                category = category_et.getText().toString();
+                abnNumber = abnNumber_et.getText().toString();
+                phone = phone_et.getText().toString();
+                desc = desc_et.getText().toString();
+                postCode = postCode_et.getText().toString();
+
+                if(!category.isEmpty() && !abnNumber.isEmpty() && !phone.isEmpty() && !desc.isEmpty() && !postCode.isEmpty()) {
+                    // todo: Add database functions and intent to home page
+                    categoryLayout.setError(null);
+                    abnNumberLayout.setError(null);
+                    phoneLayout.setError(null);
+                    descLayout.setError(null);
+                    postCodeLayout.setError(null);
+
+                    Register(category, abnNumber, phone, desc, postCode);
+                }
+
+                else {
+                    if(category.isEmpty())
+                        categoryLayout.setError("Enter category");
+
+                    else
+                        categoryLayout.setError(null);
+
+                    if(abnNumber.isEmpty())
+                        abnNumberLayout.setError("Enter ABN number");
+
+                    else
+                        abnNumberLayout.setError(null);
+
+                    if(phone.isEmpty())
+                        phoneLayout.setError("Enter post code");
+
+                    else
+                        phoneLayout.setError(null);
+
+                    if(desc.isEmpty())
+                        descLayout.setError("Enter description/ mission statement");
+
+                    else
+                        descLayout.setError(null);
+
+                    if(postCode.isEmpty())
+                        postCodeLayout.setError("Enter phone");
+
+                    else
+                        postCodeLayout.setError(null);
+                }
+            }
+        });
+
+        login = view.findViewById(R.id.cause_login);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        return view;
+    }
+
+    public void Register(final String category, final String abn, final String phone, final String desc, final String postCode) {
+
+
         progressDialog.setMessage("PLease Wait...");
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
 
         final String timestamp = "" + System.currentTimeMillis();
         final String uid = firebaseAuth.getUid();
-        causeId = uid;
+
+        final String causeId = uid;
+
         userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
 
         if (image_uri == null) {
             documentId = userId;
-            //Temp Hard Coded:
-            category = "CAUSE CAT";
-            description = "This is a test Cause Registration without an image";
-            postcode = 3000;
-            phone = "0418792366";
-            acnc = 2222;
-            causeLogo = "";
 
-            /*
-            category = tvCategory.getText().toString().trim();
-            description = etDescription.getText().toString().trim();
-            postcode = Integer.parseInt(etPostcode.getText().toString().trim());
-            phone = etPhone.getText().toString().trim();
-            acnc = Integer.parseInt(etACNC.getText().toString().trim());
-             causeLogo  ="";
-            */
-            final UserC userc = new UserC(causeId, description, category, postcode, phone, acnc, causeLogo);
+            final UserC userc = new UserC(causeId, desc, category, Integer.parseInt(postCode), phone, Integer.parseInt(abn) , causeLogo);
 
-            if (TextUtils.isEmpty(category)) {
-                tvCategory.setError("Category required");
-                tvCategory.requestFocus();
-                return;
-            } else if (TextUtils.isEmpty(description)) {
-                etDescription.setError("Description of Cause is required");
-                etDescription.requestFocus();
-                return;
-            } else if (postcode == 0) {
-                etPostcode.setError("Postcode required");
-                etPostcode.requestFocus();
-                return;
-            } else if (TextUtils.isEmpty(phone)) {
-                etPhone.setError("Phone no required");
-                etPhone.requestFocus();
-                return;
-            } else if (acnc == 0) {
-                etACNC.setError("ACNC no must be valid");
-                etACNC.requestFocus();
-                return;
-            }
-            //Firestore:
+
             CauseUserRef.add(userc)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             progressDialog.dismiss();
-                            Toast.makeText(Register_Cause.this, "Cause has been Registered", Toast.LENGTH_SHORT).show();
-                            clearData();
+                            Toast.makeText(getActivity(), "Cause has been Registered", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
@@ -241,48 +235,13 @@ public class Register_Cause extends AppCompatActivity {
 
                             if (uriTask.isSuccessful()) {
                                 documentId = userId;
-                                //Temp Hard Coded:
-                                category = "GARDENING";
-                                description = "This is a test Cause Registration for Gardening plus image";
-                                postcode = 3102;
-                                phone = "0398595665";
-                                acnc = 8888;
-                                causeLogo = downloadImageUri.toString();
-
-                            /*
-                            category = tvCategory.getText().toString().trim();
-                            description = etDescription.getText().toString().trim();
-                            postcode = Integer.parseInt(etPostcode.getText().toString().trim());
-                            phone = etPhone.getText().toString().trim();
-                            acnc = Integer.parseInt(etACNC.getText().toString().trim());
-                              causeLogo  = downloadImageUri.toString();
-                            */
-                                final UserC userc = new UserC(causeId, description, category, postcode, phone, acnc, causeLogo);
-
-                                if (TextUtils.isEmpty(category)) {
-                                    tvCategory.setError("Category required");
-                                    tvCategory.requestFocus();
-                                    return;
-                                } else if (TextUtils.isEmpty(description)) {
-                                    etDescription.setError("Description of Cause is required");
-                                    etDescription.requestFocus();
-                                    return;
-                                } else if (postcode == 0) {
-                                    etPostcode.setError("Postcode required");
-                                    etPostcode.requestFocus();
-                                    return;
-                                } else if (TextUtils.isEmpty(phone)) {
-                                    etPhone.setError("Phone no required");
-                                    etPhone.requestFocus();
-                                    return;
-                                } else if (acnc == 0) {
-                                    etACNC.setError("ACNC no must be valid");
-                                    etACNC.requestFocus();
-                                    return;
-                                }
+                                causeLogo = "";
+                                //causeLogo = downloadImageUri.toString();
 
 
-                                progressDialog.setMessage("ACNC is being Verified...");
+                                final UserC userc = new UserC(causeId, desc, category, Integer.parseInt(postCode), phone, Integer.parseInt(abn), causeLogo);
+
+                                progressDialog.setMessage("ABN is being Verified...");
                                 progressDialog.show();
 
 
@@ -291,15 +250,14 @@ public class Register_Cause extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
                                                 progressDialog.dismiss();
-                                                Toast.makeText(Register_Cause.this, "Cause Registeration was Successful", Toast.LENGTH_SHORT).show();
-                                                clearData();
+                                                Toast.makeText(getActivity(), "Cause Registeration was Successful", Toast.LENGTH_SHORT).show();
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 progressDialog.dismiss();
-                                                Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                             }
                                         });
                             }
@@ -309,126 +267,10 @@ public class Register_Cause extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(Register_Cause.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
     }
-    private void clearData () {
-        tvCategory.setText("");
-        etDescription.setText("");
-        etPostcode.setText("");
-        etPhone.setText("");
-        etACNC.setText("");
 
-        add_logo.setImageResource(R.drawable.add_image);
-
-        image_uri = null;
-    }
-////CAMERA STUFF:
-    private void showImagePickDialog(){
-        String[] options = {"Camera", "Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick Image")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0){
-                            if(checkCameraPermission()){
-                                pickFromCamera();
-                            }
-                            else{
-                                requestCameraPermission();
-                            }
-                        }
-                        else{
-                            if(checkStoragePermission()){
-                                pickFromGallery();
-                            }
-                            else{
-                                requestStoragePermission();
-                            }
-                        }
-                    }
-                })
-                .show();
-    }
-    private void pickFromGallery(){
-        Intent i = new Intent(Intent.ACTION_PICK);
-        i.setType("image/*");
-        startActivityForResult(i, IMAGE_PICK_GALLERY_CODE);
-    }
-    private void pickFromCamera(){
-        ContentValues cv = new ContentValues();
-        cv.put(MediaStore.Images.Media.TITLE, "Temp_Image_Title");
-        cv.put(MediaStore.Images.Media.DESCRIPTION, "Temp_Image_Description");
-
-        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
-
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        i.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-        startActivityForResult(i, IMAGE_PICK_CAMERA_CODE);
-    }
-    private boolean checkStoragePermission(){
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                (PackageManager.PERMISSION_GRANTED);
-        return result;
-    }
-    private void requestStoragePermission(){
-        ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
-    }
-    private boolean checkCameraPermission(){
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
-                (PackageManager.PERMISSION_GRANTED);
-        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                (PackageManager.PERMISSION_GRANTED);
-        return result && result1;
-    }
-    private void requestCameraPermission(){  //is never used
-        ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
-        switch(requestCode){
-            case CAMERA_REQUEST_CODE:{
-                if(grantResults.length >0){
-                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if(cameraAccepted && storageAccepted){
-                        pickFromCamera();
-                    }
-                    else{
-                        Toast.makeText(this, "Camera & Storage Permission Required", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            case STORAGE_REQUEST_CODE:{
-                if(grantResults.length >0){
-                    boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if(storageAccepted){
-                        pickFromGallery();
-                    }
-                    else{
-                        Toast.makeText(this, "Storage Permission Required", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        if(resultCode == RESULT_OK){
-
-            if(requestCode == IMAGE_PICK_GALLERY_CODE){
-                image_uri = data.getData();
-                add_logo.setImageURI(image_uri);
-            }
-            else if(resultCode == IMAGE_PICK_CAMERA_CODE){
-                add_logo.setImageURI(image_uri);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 }

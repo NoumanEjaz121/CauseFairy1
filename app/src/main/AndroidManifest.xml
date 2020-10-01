@@ -15,14 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".Register_Cause"></activity>
+        <activity android:name=".Auction"></activity>
         <activity android:name=".Causes" />
         <activity android:name=".Cart" />
         <activity android:name=".Market" />
         <activity android:name=".ContactUs" />
-        <activity android:name=".PrivacyPolicy" />
-        <activity android:name=".TermsOfUse" />
         <activity android:name=".about_us" />
         <activity android:name=".list_item" />
         <activity android:name=".SplashScreen">
@@ -32,11 +29,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register_Business" />
         <activity android:name=".Reset_Password" />
         <activity android:name=".HomePage" />
         <activity android:name=".SignUp" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".TermsOfUse">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <data android:scheme="terms_linking" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".PrivacyPolicy">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <data android:scheme="policy_linking" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

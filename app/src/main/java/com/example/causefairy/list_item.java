@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -67,7 +68,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class list_item extends AppCompatActivity {
 
-    private Button auc_btn;
+    private TextView auc_btn;
     private ImageView add_img2;
 
     // Variable for text
@@ -105,14 +106,29 @@ public class list_item extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_item);
 
+        // Cause initialization
         causeLayout = (TextInputLayout) findViewById(R.id.tv_layout_cause);
-        tv_cause = findViewById(R.id.tv_cause);
+        ArrayAdapter<String> causeAdapter = new ArrayAdapter<>(
+                this,
+                R.layout.dropdown_menu_popup_item,
+                Constants.causes1);
 
+        AutoCompleteTextView causeDropDown = findViewById(R.id.tv_cause);
+        causeDropDown.setAdapter(causeAdapter);
+
+        //Product Category initialization
+        categoryLayout = (TextInputLayout) findViewById(R.id.tv_layout_category);
+        ArrayAdapter<String> productAdapter = new ArrayAdapter<>(
+                this,
+                R.layout.dropdown_menu_popup_item,
+                Constants.productCategories);
+
+        AutoCompleteTextView productDropDown = findViewById(R.id.tv_category);
+        productDropDown.setAdapter(productAdapter);
+
+        // Title
         titleLayout = (TextInputLayout) findViewById(R.id.et_layout_title);
         et_title = (TextInputEditText) findViewById(R.id.et_title);
-
-        categoryLayout = (TextInputLayout) findViewById(R.id.tv_layout_category);
-        tv_category = findViewById(R.id.tv_category);
 
         descriptionLayout = (TextInputLayout) findViewById(R.id.et_layout_description);
         et_description= (TextInputEditText) findViewById(R.id.et_description);
@@ -142,23 +158,10 @@ public class list_item extends AppCompatActivity {
                 showImagePickDialog();
             }
         });
-
-        tv_category.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                categoryDialog();
-            }
-        });
-        tv_cause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                causeDialog();
-            }
-        });
         auc_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent bus = new Intent(list_item.this, Register_Business.class);
+                Intent bus = new Intent(list_item.this, Auction.class);
                 startActivity(bus);
             }
         });
@@ -169,32 +172,7 @@ public class list_item extends AppCompatActivity {
             }
         });
     }
-    private void categoryDialog(){
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("Category")
-                .setItems(Constants.productCategories1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String c = Constants.productCategories1[which];
 
-                        tv_category.setText(c);
-                    }
-                })
-                .show();
-    }
-    private void causeDialog(){
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("Cause")
-                .setItems(Constants.causes1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String c = Constants.causes1[which];
-
-                        tv_cause.setText(c);
-                    }
-                })
-                .show();
-    }
     private String documentId, productName,category, description, productIcon, timestamp, uid;
     private int qty;
     private double unitPrice;

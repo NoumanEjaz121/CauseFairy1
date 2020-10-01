@@ -36,7 +36,7 @@ public class UserC extends UserB {
     }
 
     public UserC(String documentId, String name1, String name2, String email, String password, String conpass, String profilePic, String timestamp, String uid, String businessId, String businessName, int abn, String email1, String password1, String conpass1, String busLogo, String causeId, String description, String catergory, int postcode, String phone, int acnc, String causeLogo) {
-        super(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid, businessId, businessName, abn, email1, password1, conpass1, busLogo);
+       // super(documentId, name1, name2, email, password, conpass, profilePic, timestamp, uid, businessId, businessName, abn, email1, password1, conpass1, busLogo);
         this.causeId = causeId;
         this.description = description;
         this.category = category;
@@ -46,6 +46,7 @@ public class UserC extends UserB {
         this.causeLogo = causeLogo;
     }
 
+    public static String getUid() {return "";}
     public String getDescription() {
         return description;
     }

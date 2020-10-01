@@ -30,4 +30,33 @@
     <string name="business">Business</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="business_placeholder">Business Name <font fgcolor='#FF0000'>*</font></string>
+    <string name="abn_placeholder">ABN Number <font fgcolor='#FF0000'>*</font></string>
+    <string name="business_email_placeholder">Business E-mail <font fgcolor='#FF0000'>*</font></string>
+    <string name="enter_password_placeholder">Enter Password <font fgcolor='#FF0000'>*</font></string>
+    <string name="confirm_password_placeholder">Confirm Password <font fgcolor='#FF0000'>*</font></string>
+    <string name="register_placeholder">Create your CauseFairy Account </string>
+    <string name="register_condition">By creating an account, you agree that you have read and accepted our Conditions of Use and Privacy Policy.</string>
+    <string name="already_account">I already have an account</string>
+    <string name="email_placeholder">E-mail <font fgcolor='#FF0000'>*</font></string>
+    <string name="cause_category">Cause Category <font fgcolor='#FF0000'>*</font></string>
+    <string name="description">Description/ Mission Statement <font fgcolor='#FF0000'>*</font></string>
+    <string name="postcode">Post Code <font fgcolor='#FF0000'>*</font></string>
+    <string name="phone">Phone <font fgcolor='#FF0000'>*</font></string>
+    <string name="first_name">First Name <font fgcolor='#FF0000'>*</font></string>
+    <string name="last_name">Last Name <font fgcolor='#FF0000'>*</font></string>
+    <string name="goto_home">Go to Home Page</string>
+    <string name="name_mandatory_placeholder">Name <font fgcolor='#FF0000'>*</font></string>
+    <string name="message_mandatory_placeholder">Leave a message <font fgcolor='#FF0000'>*</font></string>
+    <string name="submit_button">Submit</string>
+    <string name="select_cause_mandatory_placeholder">Select Your Cause <font fgcolor='#FF0000'>*</font></string>
+    <string name="title_mandatory_placeholder">Title <font fgcolor='#FF0000'>*</font></string>
+    <string name="description_mandatory_placeholder">Description <font fgcolor='#FF0000'>*</font></string>
+    <string name="select_product_mandatory_placeholder">Select Product Category <font fgcolor='#FF0000'>*</font></string>
+    <string name="price_mandatory_placeholder">Price <font fgcolor='#FF0000'>*</font></string>
+    <string name="quantity_mandatory_placeholder">Quantity <font fgcolor='#FF0000'>*</font></string>
+    <string name="start_mandatory_placeholder">Start Date <font fgcolor='#FF0000'>*</font></string>
+    <string name="end_mandatory_placeholder">End Date <font fgcolor='#FF0000'>*</font></string>
+    <string name="reserve_mandatory_placeholder">Reserve Price <font fgcolor='#FF0000'>*</font></string>
+    <string name="now_mandatory_placeholder">Buy Now Price <font fgcolor='#FF0000'>*</font></string>
 </resources>
