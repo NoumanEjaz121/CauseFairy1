@@ -94,7 +94,7 @@ public class Register_Cause extends AppCompatActivity {
 
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
+        //hidden back button
         ivLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +117,7 @@ public class Register_Cause extends AppCompatActivity {
         tvCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoryDialog();
+                causeDialog();
             }
         });
         btnSub.setOnClickListener(new View.OnClickListener() {
@@ -127,31 +127,32 @@ public class Register_Cause extends AppCompatActivity {
             }
         });
 }
-private void categoryDialog() {
-    AlertDialog.Builder b = new AlertDialog.Builder(this);
-    b.setTitle("Category")
-            .setItems(Constants.causeCategories, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String c = Constants.causeCategories[which];
+    private void causeDialog(){
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle("Cause")
+                .setItems(Constants.causes1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String c = Constants.causes1[which];
 
-                    tvCategory.setText(c);
-                }
-            })
-            .show();
+                        tvCategory.setText(c);
+                    }
+                })
+                .show();
+
 
     add_logo.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             showImagePickDialog();
         }
-    });
+    }); //??
     btnSub.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Register();
         }
-    });
+    }); //??
 }
     private String documentId;
     private String causeId, description, category, phone, causeLogo;

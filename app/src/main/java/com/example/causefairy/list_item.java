@@ -1,6 +1,23 @@
 package com.example.causefairy;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -43,31 +60,31 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 //import static com.example.causefairy.R.id.ivProductIcon;
-import static com.example.causefairy.R.id.spinner;
-//import static com.example.causefairy.R.id.spinner1;
 
 public class list_item extends AppCompatActivity {
 
-
-    private ImageView add_img2; //works
-    private ImageView add_img3;//not hooked up
-    private ImageView backBtn;
-    private TextView tvCategory;
-
-    private EditText et_title, et_description, et_price, et_qty;
     private Button auc_btn;
+    private ImageView add_img2;
+
+    // Variable for text
+    TextInputLayout causeLayout, titleLayout, descriptionLayout, categoryLayout;
+
+    // Variables for layout
+    TextInputEditText et_title, et_description;
+    private EditText et_price, et_qty;
+    private TextView tv_cause, tv_category;
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private CollectionReference fsListedProductRef = db.collection("fsListedProducts");
-    //private DocumentReference fsProductRef = db.document("fsListedProducts/Product fs single");
-    String userId;
+    private CollectionReference ProductRef = db.collection("Products");
 
+    String userId;
 
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 300;
@@ -88,16 +105,25 @@ public class list_item extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_item);
 
-        backBtn = findViewById(R.id.backBtn);
-        tvCategory = findViewById(R.id.tvCategory);
-        add_img2 = findViewById(R.id.add_img2);
-        add_img3 = findViewById(R.id.add_img3);
-        auc_btn = findViewById(R.id.auc_btn);
-        Button btnPost = findViewById(R.id.btnPost);
-        et_title = findViewById(R.id.et_title);
-        et_description = findViewById(R.id.item_description);
+        causeLayout = (TextInputLayout) findViewById(R.id.tv_layout_cause);
+        tv_cause = findViewById(R.id.tv_cause);
+
+        titleLayout = (TextInputLayout) findViewById(R.id.et_layout_title);
+        et_title = (TextInputEditText) findViewById(R.id.et_title);
+
+        categoryLayout = (TextInputLayout) findViewById(R.id.tv_layout_category);
+        tv_category = findViewById(R.id.tv_category);
+
+        descriptionLayout = (TextInputLayout) findViewById(R.id.et_layout_description);
+        et_description= (TextInputEditText) findViewById(R.id.et_description);
+
         et_qty = findViewById(R.id.et_qty);
         et_price = findViewById(R.id.et_price);
+
+        add_img2 = findViewById(R.id.add_img2);
+        auc_btn = findViewById(R.id.auc_btn);
+
+        Button btnPost = findViewById(R.id.btnPost);
 
         firebaseAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -110,34 +136,23 @@ public class list_item extends AppCompatActivity {
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
         add_img2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImagePickDialog();
             }
         });
-        add_img2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showImagePickDialog();
-            }
-        });
-        add_img3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showImagePickDialog();
-            }
-        });
-        tvCategory.setOnClickListener(new View.OnClickListener() {
+
+        tv_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 categoryDialog();
+            }
+        });
+        tv_cause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                causeDialog();
             }
         });
         auc_btn.setOnClickListener(new View.OnClickListener() {
@@ -157,17 +172,194 @@ public class list_item extends AppCompatActivity {
     private void categoryDialog(){
         AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setTitle("Category")
-                .setItems(Constants.productCategories, new DialogInterface.OnClickListener() {
+                .setItems(Constants.productCategories1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String c = Constants.productCategories[which];
+                        String c = Constants.productCategories1[which];
 
-                        tvCategory.setText(c);
+                        tv_category.setText(c);
                     }
                 })
                 .show();
     }
+    private void causeDialog(){
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle("Cause")
+                .setItems(Constants.causes1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String c = Constants.causes1[which];
 
+                        tv_cause.setText(c);
+                    }
+                })
+                .show();
+    }
+    private String documentId, productName,category, description, productIcon, timestamp, uid;
+    private int qty;
+    private double unitPrice;
+
+    public void addProductListing() {
+        progressDialog.setMessage("PLease Wait...");
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        documentId = uid + timestamp;
+        userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+
+        if (image_uri == null) {
+            final String documentId = userId + "" + timestamp;
+            final String productName = et_title.getText().toString().trim();
+            final String category = tv_category.getText().toString().trim();
+            final String description = et_description.getText().toString().trim();
+            final int qty = Integer.parseInt(et_qty.getText().toString().trim());
+            double unitPrice = Double.parseDouble(et_price.getText().toString().trim());
+
+            final String productIcon = "";
+            final String timestamp = "" + System.currentTimeMillis();
+            final String uid = firebaseAuth.getUid();
+
+            final Product product = new Product(documentId, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
+
+            if (TextUtils.isEmpty(productName)) {
+                et_title.setError("Title required");
+                et_title.requestFocus();
+                return;
+            } else if (TextUtils.isEmpty(category)) {
+                tv_category.setError("Category required");
+                tv_category.requestFocus();
+                return;
+            } else if (TextUtils.isEmpty(description)) {
+                et_description.setError("Description required");
+                et_description.requestFocus();
+                return;
+            } else if (qty == 0) {
+                et_qty.setError("Please enter quantity");
+                et_qty.requestFocus();
+                return;
+            } else if (unitPrice <= 5.0) {
+                et_price.setError("Price must be over $5");
+                et_price.requestFocus();
+                return;
+            }
+//Firestore:
+            ProductRef.add(product)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            progressDialog.dismiss();
+                            Toast.makeText(list_item.this, "Product has been Added", Toast.LENGTH_SHORT).show();
+                            clearData();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(list_item.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+
+
+            final String timestamp = "" + System.currentTimeMillis();
+            String filePath = "PRODUCT_IMAGES/" + timestamp;
+
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
+            storageRef.putFile(image_uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!uriTask.isSuccessful()) ;
+                            Uri downloadImageUri = uriTask.getResult();
+                            userId = firebaseAuth.getCurrentUser().getUid();
+                            if (uriTask.isSuccessful()) {
+                                final String documentId = userId + "" + timestamp;
+                                final String productName = et_title.getText().toString().trim();
+                                final String category = tv_category.getText().toString().trim();
+                                final String description = et_description.getText().toString().trim();
+                                final int qty = Integer.parseInt(et_qty.getText().toString().trim());
+                                double unitPrice = Double.parseDouble(et_price.getText().toString().trim());
+
+                                final String productIcon = downloadImageUri.toString();  //will need to cater for no image but works for now
+
+                                final String timestamp = "" + System.currentTimeMillis();
+                                final String uid = firebaseAuth.getUid();
+
+                                final Product product = new Product(documentId, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
+
+                                if (TextUtils.isEmpty(productName)) {
+                                    et_title.setError("Title required");
+                                    et_title.requestFocus();
+                                    return;
+                                } else if (TextUtils.isEmpty(category)) {
+                                    tv_category.setError("Category required");
+                                    tv_category.requestFocus();
+                                    return;
+                                } else if (TextUtils.isEmpty(description)) {
+                                    et_description.setError("Description required");
+                                    et_description.requestFocus();
+                                    return;
+                                } else if (qty == 0) {
+                                    et_qty.setError("Please enter quantity");
+                                    et_qty.requestFocus();
+                                    return;
+                                } else if (unitPrice <= 5.0) {
+                                    et_price.setError("Price must be over $5");
+                                    et_price.requestFocus();
+                                    return;
+                                }
+
+
+                                progressDialog.setMessage("Product being Added...");
+                                progressDialog.show();
+
+
+                                ProductRef.add(product)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(list_item.this, "Product has been Added", Toast.LENGTH_SHORT).show();
+                                                clearData();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(list_item.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(list_item.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    private void clearData () {
+        tv_cause.setText("");
+        et_title.setText("");
+        tv_category.setText("");
+        et_description.setText("");
+        et_qty.setText("");
+        et_price.setText("");
+
+        add_img2.setImageResource(R.drawable.add_image);
+
+        image_uri = null;
+    }
+
+    //CAMERA STUFF:
     private void showImagePickDialog(){
         String[] options = {"Camera", "Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -272,104 +464,6 @@ public class list_item extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public void addProductListing() {
-
-            final String timestamp = "" + System.currentTimeMillis();
-            String filePath = "PRODUCT_IMAGES/" + timestamp;
-
-            StorageReference storageRef = FirebaseStorage.getInstance().getReference(filePath);
-            storageRef.putFile(image_uri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while (!uriTask.isSuccessful()) ;
-                            Uri downloadImageUri = uriTask.getResult();
-                            userId = firebaseAuth.getCurrentUser().getUid();
-                            if (uriTask.isSuccessful()) {
-                                final String documentId = userId + "" + timestamp;
-                                final String productName = et_title.getText().toString().trim();
-                                final String category = tvCategory.getText().toString().trim();
-                                final String description = et_description.getText().toString().trim();
-                                final int qty = Integer.parseInt(et_qty.getText().toString().trim());
-                                double unitPrice = Double.parseDouble(et_price.getText().toString().trim());
-
-                                final String productIcon  = downloadImageUri.toString();  //will need to cater for no image but works for now
-
-                                final String timestamp = "" + System.currentTimeMillis();
-                                final String uid = firebaseAuth.getUid();
-
-                                final Product product = new Product(documentId, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
-
-                                if (TextUtils.isEmpty(productName)) {
-                                    et_title.setError("Title required");
-                                    et_title.requestFocus();
-                                    return;
-                                } else if (TextUtils.isEmpty(category)) {
-                                    tvCategory.setError("Category required");
-                                    tvCategory.requestFocus();
-                                    return;
-                                } else if (TextUtils.isEmpty(description)) {
-                                    et_description.setError("Description required");
-                                    et_description.requestFocus();
-                                    return;
-                                }
-                                else if (qty == 0) {
-                                    et_qty.setError("Please enter quantity");
-                                    et_qty.requestFocus();
-                                    return;
-                                } else if (unitPrice <= 5.0) {
-                                    et_price.setError("Price must be over $5");
-                                    et_price.requestFocus();
-                                    return;
-                                }
-
-
-                                progressDialog.setMessage("Product being Added...");
-                                progressDialog.show();
-
-
-                                fsListedProductRef.add(product)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-                                                progressDialog.dismiss();
-                                                Toast.makeText(list_item.this, "Product has been added to FSN", Toast.LENGTH_SHORT).show();
-                                                clearData();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                progressDialog.dismiss();
-                                                Toast.makeText(list_item.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            }
-                        }
-        })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(list_item.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
-
-    private void clearData () {
-        et_title.setText("");
-        tvCategory.setText("");
-        et_description.setText("");
-        et_qty.setText("");
-        et_price.setText("");
-
-        add_img2.setImageResource(R.drawable.add_image);// needs fixing but i have no idea re drawable stuff??
-
-        image_uri = null;
     }
 
 }
