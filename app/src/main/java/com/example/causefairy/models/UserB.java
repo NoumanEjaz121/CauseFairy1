@@ -10,20 +10,23 @@ public class UserB {
     private int abn;
     private String email;
     private String password;
+    private String confirm;
     private String busLogo;
 
     public UserB(){}
 
-    public void setBusinessId(String causeId) {
-        this.businessId= causeId;
+    public void setBusinessId(String businessId) {
+        this.businessId= businessId;
     }
 
-    public UserB(String businessId, String businessName, int abn, String email1, String password , String busLogo, String timestamp, String uid) {
+    public UserB(String uid, String businessId, String businessName, int abn, String email1, String password , String confirm, String busLogo) {
+        User.getUid();
         this.businessId = businessId;
         this.businessName = businessName;
         this.abn = abn;
         this.email = email1;
         this.password = password;
+        this.confirm = confirm;
         this.busLogo = busLogo;
     }
 
@@ -50,5 +53,10 @@ public class UserB {
     public String getPassword() {
         return password;
     }
+
+    public String getConfirm() {
+        return confirm;
+    }
+
 
 }

@@ -14,32 +14,29 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cause_layout_category"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/tv_layout_category"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/cause_category"
-            app:endIconMode="clear_text"
-            android:layout_marginTop="10dp"
+            android:hint="@string/select_cause_Category_mandatory_placeholder"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            app:startIconDrawable="@drawable/baseline_business_black_24">
+            android:layout_marginTop="5dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cause_en_category"
+            <AutoCompleteTextView
+                android:id="@+id/tv_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:inputType="none" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cause_layout_abn"
+            android:id="@+id/cause_layout_acnc"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/abn_placeholder"
+            android:hint="@string/acnc_placeholder"
             app:endIconMode="clear_text"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
@@ -47,7 +44,7 @@
             app:startIconDrawable="@drawable/baseline_business_black_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cause_en_abn"
+                android:id="@+id/cause_en_acnc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
@@ -119,7 +116,12 @@
                 android:textSize="12sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
+        <ImageView
+            android:id="@+id/add_logo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/add_image" />
         <Button
             android:id="@+id/cause_btnSignUp"
             android:layout_width="match_parent"

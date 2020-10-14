@@ -188,7 +188,7 @@ public class list_item extends AppCompatActivity {
         if (image_uri == null) {
             final String documentId = userId + "" + timestamp;
             final String productName = et_title.getText().toString().trim();
-            final String category = tv_category.getText().toString().trim();
+          //  final String category = tv_category.getText().toString().trim();
             final String description = et_description.getText().toString().trim();
             final int qty = Integer.parseInt(et_qty.getText().toString().trim());
             double unitPrice = Double.parseDouble(et_price.getText().toString().trim());

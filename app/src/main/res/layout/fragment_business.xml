@@ -119,6 +119,12 @@
                 android:textSize="12sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageView
+            android:id="@+id/add_logo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/add_image" />
 
         <Button
             android:id="@+id/business_btnSignUp"

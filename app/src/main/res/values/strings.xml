@@ -32,6 +32,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="business_placeholder">Business Name <font fgcolor='#FF0000'>*</font></string>
     <string name="abn_placeholder">ABN Number <font fgcolor='#FF0000'>*</font></string>
+    <string name="acnc_placeholder">ACNC Number <font fgcolor='#FF0000'>*</font></string>
     <string name="business_email_placeholder">Business E-mail <font fgcolor='#FF0000'>*</font></string>
     <string name="enter_password_placeholder">Enter Password <font fgcolor='#FF0000'>*</font></string>
     <string name="confirm_password_placeholder">Confirm Password <font fgcolor='#FF0000'>*</font></string>
@@ -50,6 +51,7 @@
     <string name="message_mandatory_placeholder">Leave a message <font fgcolor='#FF0000'>*</font></string>
     <string name="submit_button">Submit</string>
     <string name="select_cause_mandatory_placeholder">Select Your Cause <font fgcolor='#FF0000'>*</font></string>
+    <string name="select_cause_Category_mandatory_placeholder">Select Cause Category <font fgcolor='#FF0000'>*</font></string>
     <string name="title_mandatory_placeholder">Title <font fgcolor='#FF0000'>*</font></string>
     <string name="description_mandatory_placeholder">Description <font fgcolor='#FF0000'>*</font></string>
     <string name="select_product_mandatory_placeholder">Select Product Category <font fgcolor='#FF0000'>*</font></string>

@@ -62,10 +62,10 @@ public class User {
     public String getConpass() {
         return conpass;
     }
+
     public String getTimestamp() {
         return timestamp;
     }
-
 
     public static String getUid() {
         return uid;
