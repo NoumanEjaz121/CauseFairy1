@@ -6,6 +6,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Product {
     private String documentId; //productId
+    private String cause;
     private String productName;
     private String category;
     private String description;
@@ -35,8 +36,9 @@ public class Product {
         this.unitPrice = unitPrice;
     }
 
-    public Product(String documentId, String productName, String category, String description, int qty, double unitPrice, String productIcon, String timestamp, String uid) {
+    public Product(String documentId, String cause, String productName, String category, String description, int qty, double unitPrice, String productIcon, String timestamp, String uid) {
         this.documentId = documentId;
+        this.cause = cause;
         this.productName = productName;
         this.category = category;
         this.description = description;
@@ -45,6 +47,10 @@ public class Product {
         this.productIcon = productIcon;
         this.timestamp = timestamp;
         this.uid = uid;
+    }
+
+    public String getCause() {
+        return cause;
     }
 
     public String getProductName() {

@@ -108,16 +108,20 @@ public class list_item extends AppCompatActivity {
 
         // Cause initialization
         causeLayout = (TextInputLayout) findViewById(R.id.tv_layout_cause);
-        ArrayAdapter<String> causeAdapter = new ArrayAdapter<>(
+        tv_cause = findViewById(R.id.tv_cause);
+
+       /* ArrayAdapter<String> causeAdapter = new ArrayAdapter<>(
                 this,
                 R.layout.dropdown_menu_popup_item,
                 Constants.causes1);
 
         AutoCompleteTextView causeDropDown = findViewById(R.id.tv_cause);
         causeDropDown.setAdapter(causeAdapter);
-
+*/
         //Product Category initialization
         categoryLayout = (TextInputLayout) findViewById(R.id.tv_layout_category);
+        tv_category = findViewById(R.id.tv_category);
+        /*
         ArrayAdapter<String> productAdapter = new ArrayAdapter<>(
                 this,
                 R.layout.dropdown_menu_popup_item,
@@ -125,7 +129,7 @@ public class list_item extends AppCompatActivity {
 
         AutoCompleteTextView productDropDown = findViewById(R.id.tv_category);
         productDropDown.setAdapter(productAdapter);
-
+*/
         // Title
         titleLayout = (TextInputLayout) findViewById(R.id.et_layout_title);
         et_title = (TextInputEditText) findViewById(R.id.et_title);
@@ -158,6 +162,19 @@ public class list_item extends AppCompatActivity {
                 showImagePickDialog();
             }
         });
+
+        tv_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                categoryDialog();
+            }
+        });
+        tv_cause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                causeDialog();
+            }
+        });
         auc_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,8 +189,33 @@ public class list_item extends AppCompatActivity {
             }
         });
     }
+    private void categoryDialog(){
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle("Category")
+                .setItems(Constants.productCategories1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String c = Constants.productCategories1[which];
 
-    private String documentId, productName,category, description, productIcon, timestamp, uid;
+                        tv_category.setText(c);
+                    }
+                })
+                .show();
+    }
+    private void causeDialog(){
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle("Cause")
+                .setItems(Constants.causes1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String c = Constants.causes1[which];
+
+                        tv_cause.setText(c);
+                    }
+                })
+                .show();
+    }
+    private String documentId, cause, productName, category, description, productIcon, timestamp, uid;
     private int qty;
     private double unitPrice;
 
@@ -187,8 +229,9 @@ public class list_item extends AppCompatActivity {
 
         if (image_uri == null) {
             final String documentId = userId + "" + timestamp;
+            final String cause = tv_cause.getText().toString().trim();
             final String productName = et_title.getText().toString().trim();
-          //  final String category = tv_category.getText().toString().trim();
+            final String category = tv_category.getText().toString().trim();
             final String description = et_description.getText().toString().trim();
             final int qty = Integer.parseInt(et_qty.getText().toString().trim());
             double unitPrice = Double.parseDouble(et_price.getText().toString().trim());
@@ -197,7 +240,7 @@ public class list_item extends AppCompatActivity {
             final String timestamp = "" + System.currentTimeMillis();
             final String uid = firebaseAuth.getUid();
 
-            final Product product = new Product(documentId, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
+            final Product product = new Product(documentId, cause, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
 
             if (TextUtils.isEmpty(productName)) {
                 et_title.setError("Title required");
@@ -255,6 +298,7 @@ public class list_item extends AppCompatActivity {
                             userId = firebaseAuth.getCurrentUser().getUid();
                             if (uriTask.isSuccessful()) {
                                 final String documentId = userId + "" + timestamp;
+                                final String cause = tv_cause.getText().toString().trim();
                                 final String productName = et_title.getText().toString().trim();
                                 final String category = tv_category.getText().toString().trim();
                                 final String description = et_description.getText().toString().trim();
@@ -266,7 +310,7 @@ public class list_item extends AppCompatActivity {
                                 final String timestamp = "" + System.currentTimeMillis();
                                 final String uid = firebaseAuth.getUid();
 
-                                final Product product = new Product(documentId, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
+                                final Product product = new Product(documentId, cause, productName, category, description, qty, unitPrice, productIcon, timestamp, uid);
 
                                 if (TextUtils.isEmpty(productName)) {
                                     et_title.setError("Title required");
