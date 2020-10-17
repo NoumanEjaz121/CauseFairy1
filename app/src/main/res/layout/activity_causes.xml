@@ -95,7 +95,7 @@
         <RelativeLayout
             android:id="@+id/causesRL1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp">
 
@@ -126,7 +126,6 @@
             android:layout_gravity="bottom"
             android:layout_marginTop="60dp"
             android:background="@color/grey"
-            android:paddingStart="15dp"
             android:paddingEnd="5dp">
 
             <LinearLayout

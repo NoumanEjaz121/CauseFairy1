@@ -47,43 +47,26 @@ public class AdapterCauses extends RecyclerView.Adapter<AdapterCauses.HolderCaus
        View view = LayoutInflater.from(context).inflate(R.layout.row_cause_card, parent, false);
         return new HolderCauses(view);
     }
-    String uidB, businessId, businessName, email1, password, confirm, busLogo;
-    int abn;
+
      public void onBindViewHolder(@NonNull HolderCauses holder, int position) {
          UserC userc = causeList.get(position);
-         UserB userb= causeList.get(position);
-         String uid = userc.getUid();
-         if(uid == uidB) {
-             String title = userb.getBusinessName(); //??
-         }
-
+         String uid = UserC.getUid();
         //get data
         String id = userc.getCauseId();
-
-
-        String title = userb.getBusinessName(); //??
+        String title = userc.getBusinessName();
         String category = userc.getCategory();
         String desc = userc.getDescription();
         String postcode = String.valueOf(userc.getPostcode());
         String phone = userc.getPhone();
         String acnc = String.valueOf(userc.getAcnc());
         String icon = userc.getCauseLogo();
-       // String timestamp = userc.getTimestamp();
 
 
         //set card data
         holder.tvCategory.setText(category);
-        holder.tvCauseName.setText(title);
         holder.tvDescription.setText(desc);
         holder.tv1.setText(phone);
-        if(postcode.substring(1).charAt(0)==3){
-            holder.tv2.setText(" VIC ");
-         }else if(postcode.charAt(0)==3){
-             holder.tv2.setText("NSW");
-         }else {
-          //  holder.tv2.setVisibility(View.VISIBLE);
-            holder.tv2.setText("    ");
-        }
+        holder.tv2.setText("    ");
         holder.tvPostcode.setText(postcode);
 
         try{
@@ -116,13 +99,13 @@ public class AdapterCauses extends RecyclerView.Adapter<AdapterCauses.HolderCaus
             super(itemView);
 
             ivLogo = itemView.findViewById(R.id.ivLogo);
-            tvCauseName = itemView.findViewById(R.id.tvCauseName);
+         //   tvCauseName = itemView.findViewById(R.id.tvCauseName);
             tvCategory= itemView.findViewById(R.id.tvCategory);
             tv1 = itemView.findViewById(R.id.tv1);
             tv2 = itemView.findViewById(R.id.tv2);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvPostcode = itemView.findViewById(R.id.tvPostcode);
-            rbStars = itemView.findViewById(R.id.rbStars);
+          //  rbStars = itemView.findViewById(R.id.rbStars);
 
         }
 

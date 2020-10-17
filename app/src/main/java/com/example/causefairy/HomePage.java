@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ClipData;
 import android.content.Intent;
@@ -17,9 +18,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.causefairy.models.User;
+import com.example.causefairy.models.UserB;
+import com.example.causefairy.models.UserC;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
 
 public class HomePage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -29,6 +49,14 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     TextView about, us, terms, use, sell, shop, tvCause;
     ImageView instagram, facebook, twitter;
 
+    private RecyclerView rvCauses;
+
+    private ArrayList<UserC> causeList;
+    private AdapterCauses adapterCauses;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference ListedCauseRef = db.collection("UserC");
 
 
     @Override
@@ -42,7 +70,10 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+        RelativeLayout causesRL1 = findViewById(R.id.causesRL1);
+        rvCauses= findViewById(R.id.rvCauses);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         //Toolbar
         setSupportActionBar(toolbar);
 
@@ -53,15 +84,40 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
+/*
         ImageView slideshow = findViewById(R.id.slideshow);
         AnimationDrawable animationDrawable = (AnimationDrawable) slideshow.getDrawable();
         animationDrawable.start();
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
 
+                <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:src="@drawable/howitworks" />
+
+            </RelativeLayout>
+
+/*
         ImageView market_slides = findViewById(R.id.market_slides);
         AnimationDrawable animationDrawable1 = (AnimationDrawable) market_slides.getDrawable();
         animationDrawable1.start();
+          <RelativeLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
 
+                <ImageView
+                    android:id="@+id/market_slides"
+                    android:layout_width="match_parent"
+                    android:layout_height="127dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/market_slides" />
+            </RelativeLayout>
+
+*/
         //Bottom Bar Implementation
 
         about = findViewById(R.id.about);
@@ -172,8 +228,33 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
             }
         });
-    }
+       loadAllCauses();
 
+
+    }
+    private void loadAllCauses() {
+        causeList = new ArrayList<>();
+        ListedCauseRef.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot ds : queryDocumentSnapshots) {
+                            UserC userc = ds.toObject(UserC.class);
+                            causeList.add(userc);
+                        }
+                        adapterCauses = new AdapterCauses(HomePage.this, causeList);
+                        rvCauses.setAdapter(adapterCauses);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+               Toast.makeText(HomePage.this, "Please Sign In", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
 
     @Override
     public void onBackPressed() {

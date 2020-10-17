@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
        tvfrgtPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent f = new Intent(MainActivity.this, Trending2.class);
+                Intent f = new Intent(MainActivity.this, HomePage.class);
                 startActivity(f);
             }
         });

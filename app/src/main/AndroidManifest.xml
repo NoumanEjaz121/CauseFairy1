@@ -15,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Trending2"></activity>
         <activity android:name=".Auction" />
         <activity android:name=".Causes" />
         <activity android:name=".Cart" />

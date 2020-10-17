@@ -168,38 +168,35 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="130dp">
-
-                <ImageView
-                    android:id="@+id/market_slides"
-                    android:layout_width="match_parent"
-                    android:layout_height="127dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/market_slides" />
-            </RelativeLayout>
-
-            <RelativeLayout
+                android:id="@+id/causesRL1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="21dp">
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp">
 
-                <ImageView
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCauses"
                     android:layout_width="match_parent"
-                    android:layout_height="197dp"
-                    android:src="@drawable/howitworks" />
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tvFilteredCauses"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/row_cause_card"/>
 
             </RelativeLayout>
+
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/grey"
-                android:paddingStart="15dp"
+                android:paddingStart="5dp"
                 android:paddingEnd="5dp"
                 android:layout_gravity="bottom"
-                android:layout_marginTop="50dp">
+                android:layout_marginTop="5dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
