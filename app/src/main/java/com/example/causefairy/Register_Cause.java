@@ -14,6 +14,8 @@ import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -108,14 +110,22 @@ public class  Register_Cause extends Fragment {
                 showImagePickDialog();
             }
         });
+
         //Dropdown choices
-        tv_category = view.findViewById(R.id.tv_category);
-        tv_category.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                causeDialog();
-            }
-        });
+        //tv_category = view.findViewById(R.id.tv_category);
+        //tv_category.setOnClickListener(new View.OnClickListener() {
+         //   @Override
+           // public void onClick(View v) {
+             //   causeDialog();
+            //}
+        //});
+
+        // Array Adapter for choices
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.dropdown_menu_popup_item, Constants.causes1);
+        AutoCompleteTextView tv_category = (AutoCompleteTextView) view.findViewById(R.id.tv_category);
+        tv_category.setAdapter(adapter);
+
 
         // Layout Initialization
         acncNumberLayout = (TextInputLayout)view.findViewById(R.id.cause_layout_acnc);

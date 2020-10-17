@@ -157,12 +157,13 @@ It is a free fundraising platform and new revenue stream for all of Australia’
     <Button
         android:id="@+id/aboutus_homepage"
         android:layout_marginTop="5dp"
-        android:layout_width="199dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center"
-        android:background="@drawable/btn_login"
-        android:text="Continue to Home page"
-        android:textColor="@color/blue" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/colorPrimary"
+        android:text="Continue to Home page" />
 
 
 </LinearLayout>

@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         tvReg = findViewById(R.id.tvReg);
         btnLogin = findViewById(R.id.btnLogin);
         tvfrgtPass = findViewById(R.id.tvfrgtPass);
-        btnLogOut = findViewById(R.id.btnLogOut);
+       // btnLogOut = findViewById(R.id.btnLogOut);
 
         // layout/textview  initialize
         emailLayout = (TextInputLayout) findViewById(R.id.signin_layout_email);
@@ -106,14 +106,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
        //needs design
-       btnLogOut.setOnClickListener(new View.OnClickListener() {
+       /*btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 Intent i = new Intent(MainActivity.this, HomePage.class);
                 startActivity(i);
             }
-        });
+        });*/
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

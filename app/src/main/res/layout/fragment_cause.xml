@@ -15,19 +15,20 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tv_layout_category"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/select_cause_Category_mandatory_placeholder"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
 
             <AutoCompleteTextView
                 android:id="@+id/tv_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                tools:ignore="LabelFor" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
