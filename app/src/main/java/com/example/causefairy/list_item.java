@@ -108,28 +108,26 @@ public class list_item extends AppCompatActivity {
 
         // Cause initialization
         causeLayout = (TextInputLayout) findViewById(R.id.tv_layout_cause);
-        tv_cause = findViewById(R.id.tv_cause);
 
-       /* ArrayAdapter<String> causeAdapter = new ArrayAdapter<>(
+        ArrayAdapter<String> causeAdapter = new ArrayAdapter<>(
                 this,
                 R.layout.dropdown_menu_popup_item,
                 Constants.causes1);
 
-        AutoCompleteTextView causeDropDown = findViewById(R.id.tv_cause);
-        causeDropDown.setAdapter(causeAdapter);
-*/
+        AutoCompleteTextView tv_cause = findViewById(R.id.tv_cause);
+        tv_cause.setAdapter(causeAdapter);
+
         //Product Category initialization
         categoryLayout = (TextInputLayout) findViewById(R.id.tv_layout_category);
-        tv_category = findViewById(R.id.tv_category);
-        /*
+
         ArrayAdapter<String> productAdapter = new ArrayAdapter<>(
                 this,
                 R.layout.dropdown_menu_popup_item,
                 Constants.productCategories);
 
-        AutoCompleteTextView productDropDown = findViewById(R.id.tv_category);
-        productDropDown.setAdapter(productAdapter);
-*/
+        AutoCompleteTextView tv_category = findViewById(R.id.tv_category);
+        tv_category.setAdapter(productAdapter);
+
         // Title
         titleLayout = (TextInputLayout) findViewById(R.id.et_layout_title);
         et_title = (TextInputEditText) findViewById(R.id.et_title);
@@ -163,18 +161,18 @@ public class list_item extends AppCompatActivity {
             }
         });
 
-        tv_category.setOnClickListener(new View.OnClickListener() {
+       /* tv_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 categoryDialog();
             }
-        });
-        tv_cause.setOnClickListener(new View.OnClickListener() {
+        });*/
+     /*   tv_cause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 causeDialog();
             }
-        });
+        });*/
         auc_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

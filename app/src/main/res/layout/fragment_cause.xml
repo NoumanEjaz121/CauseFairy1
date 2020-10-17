@@ -63,7 +63,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            app:startIconDrawable="@drawable/baseline_business_black_24">
+            app:startIconDrawable="@drawable/outline_description_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cause_en_desc"
@@ -84,7 +84,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            app:startIconDrawable="@drawable/baseline_alternate_email_24">
+            app:startIconDrawable="@drawable/baseline_phone_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cause_en_phone"
@@ -106,7 +106,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            app:startIconDrawable="@drawable/baseline_alternate_email_24">
+            app:startIconDrawable="@drawable/outline_place_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cause_en_postcode"
@@ -122,7 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/add_image" />
+            android:src="@drawable/outline_add_photo_alternate_24" />
         <Button
             android:id="@+id/cause_btnSignUp"
             android:layout_width="match_parent"
