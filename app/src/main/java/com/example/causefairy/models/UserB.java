@@ -58,5 +58,27 @@ public class UserB {
         return confirm;
     }
 
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
+    }
 
+    public void setAbn(int abn) {
+        this.abn = abn;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
+    }
+
+    public void setBusLogo(String busLogo) {
+        this.busLogo = busLogo;
+    }
 }

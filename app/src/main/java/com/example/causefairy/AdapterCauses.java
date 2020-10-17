@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.causefairy.models.UserB;
 import com.example.causefairy.models.UserC;
 import com.squareup.picasso.Picasso;
 
@@ -46,13 +47,21 @@ public class AdapterCauses extends RecyclerView.Adapter<AdapterCauses.HolderCaus
        View view = LayoutInflater.from(context).inflate(R.layout.row_cause_card, parent, false);
         return new HolderCauses(view);
     }
-
+    String uidB, businessId, businessName, email1, password, confirm, busLogo;
+    int abn;
      public void onBindViewHolder(@NonNull HolderCauses holder, int position) {
-        UserC userc = causeList.get(position);
+         UserC userc = causeList.get(position);
+         UserB userb= causeList.get(position);
+         String uid = userc.getUid();
+         if(uid == uidB) {
+             String title = userb.getBusinessName(); //??
+         }
 
         //get data
         String id = userc.getCauseId();
-        String title = userc.getBusinessName(); //??
+
+
+        String title = userb.getBusinessName(); //??
         String category = userc.getCategory();
         String desc = userc.getDescription();
         String postcode = String.valueOf(userc.getPostcode());
@@ -60,20 +69,20 @@ public class AdapterCauses extends RecyclerView.Adapter<AdapterCauses.HolderCaus
         String acnc = String.valueOf(userc.getAcnc());
         String icon = userc.getCauseLogo();
        // String timestamp = userc.getTimestamp();
-        String uid = userc.getUid();
+
 
         //set card data
         holder.tvCategory.setText(category);
-      //  holder.tvCauseName.setText(UserB.getUid().getBusName());
+        holder.tvCauseName.setText(title);
         holder.tvDescription.setText(desc);
         holder.tv1.setText(phone);
         if(postcode.substring(1).charAt(0)==3){
             holder.tv2.setText(" VIC ");
-         }else if(postcode.substring(1).charAt(0)==2){
+         }else if(postcode.charAt(0)==3){
              holder.tv2.setText("NSW");
          }else {
           //  holder.tv2.setVisibility(View.VISIBLE);
-            holder.tv2.setText("****");
+            holder.tv2.setText("    ");
         }
         holder.tvPostcode.setText(postcode);
 

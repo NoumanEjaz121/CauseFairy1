@@ -83,5 +83,29 @@ public class UserC extends UserB {
     public String getCauseLogo() {
         return causeLogo;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setPostcode(int postcode) {
+        this.postcode = postcode;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setAcnc(int acnc) {
+        this.acnc = acnc;
+    }
+
+    public void setCauseLogo(String causeLogo) {
+        this.causeLogo = causeLogo;
+    }
 }
 

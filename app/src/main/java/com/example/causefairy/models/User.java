@@ -71,6 +71,35 @@ public class User {
         return uid;
     }
 
+    public void setName1(String name1) {
+        this.name1 = name1;
+    }
 
+    public void setName2(String name2) {
+        this.name2 = name2;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setConpass(String conpass) {
+        this.conpass = conpass;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public static void setUid(String uid) {
+        User.uid = uid;
+    }
 }
